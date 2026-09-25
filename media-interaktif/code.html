@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Source Code | Warung Pak Din</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="code.html">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">P</span
+          ><span
+            ><strong>Warung Pak Din</strong
+            ><small>Media PjBL Pascal</small></span
+          ></a
+        >
+        <div class="nav-label">Materi proyek</div>
+        <nav class="nav-list" data-navigation></nav>
+      </aside>
+      <main class="main">
+        <div class="page">
+          <header class="page-header">
+            <p class="eyebrow">07 / Source code</p>
+            <h1>Kenali blok yang membuat program bekerja.</h1>
+            <p class="lead">
+              Tabs ini menyorot bagian penting dari file
+              <code class="inline-code">project.pas</code>.
+            </p>
+          </header>
+          <div data-tab-group class="code-tabs">
+            <div class="tabs">
+              <button class="tab-button active" data-tab="data">Data</button
+              ><button class="tab-button" data-tab="menu">CASE OF</button
+              ><button class="tab-button" data-tab="bayar">Pembayaran</button>
+            </div>
+            <div class="tab-panel active" data-panel="data">
+              <pre><code>type
+  TPesanan = record
+    namaMenu : string[40];
+    harga, subtotal : longint;
+    jumlah : integer;
+  end;
+
+var
+  pesanan : array[1..MAX_PESANAN] of TPesanan;</code></pre>
+              <p class="muted">
+                Record mengelompokkan atribut satu pesanan, lalu array menyimpan
+                banyak record.
+              </p>
+            </div>
+            <div class="tab-panel" data-panel="menu">
+              <pre><code>case nomor of
+  1: begin
+    namaMenuDipilih := 'Nasi Goreng';
+    hargaMenuDipilih := 15000;
+  end;
+  30: begin
+    namaMenuDipilih := 'Jus Jeruk';
+    hargaMenuDipilih := 10000;
+  end;
+end;</code></pre>
+              <p class="muted">
+                CASE OF memilih nama dan harga berdasarkan nomor menu.
+              </p>
+            </div>
+            <div class="tab-panel" data-panel="bayar">
+              <pre><code>repeat
+  readln(uangBayar);
+  if uangBayar &lt; totalBelanja then
+    writeln('UANG TIDAK MENCUKUPI')
+  else
+    kembalian := uangBayar - totalBelanja;
+until uangBayar &gt;= totalBelanja;</code></pre>
+              <p class="muted">
+                REPEAT UNTIL menjamin pembayaran valid sebelum struk dicetak.
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Konsep yang tampak</h2>
+            <div class="kicker-row">
+              <span class="badge">Variabel</span
+              ><span class="badge">Record</span><span class="badge">Array</span
+              ><span class="badge">IF ELSE</span
+              ><span class="badge">CASE OF</span><span class="badge">FOR</span
+              ><span class="badge">REPEAT UNTIL</span>
+            </div>
+            <p>
+              Source code lengkap berada di folder proyek, sedangkan potongan di
+              atas dipilih agar hubungan antara konsep dan perilaku program
+              mudah dipresentasikan.
+            </p>
+          </div>
+          <div class="footer-nav">
+            <a class="btn secondary" href="flowchart.html">← Flowchart</a
+            ><a class="btn" href="simulasi.html">Coba simulasi →</a>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

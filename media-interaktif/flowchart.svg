@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1350">
+<defs><style>text{font-family:Arial,sans-serif;fill:#0f172a;font-weight:700}.small{font-size:22px}.node{stroke-width:4}.arrow{stroke:#2563eb;stroke-width:5;fill:none;marker-end:url(#m)}</style><marker id="m" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#2563eb"/></marker></defs>
+<rect width="900" height="1350" fill="#fff"/><text x="450" y="55" text-anchor="middle" font-size="32">FLOWCHART WARUNG PAK DIN</text>
+<rect class="node" x="280" y="95" width="340" height="70" rx="35" fill="#dbeafe" stroke="#2563eb"/><text x="450" y="139" text-anchor="middle" font-size="25">Mulai</text>
+<path class="arrow" d="M450 165 V220"/><path class="arrow" d="M450 320 V375"/><path class="arrow" d="M450 475 V530"/><path class="arrow" d="M450 630 V685"/><path class="arrow" d="M450 785 V840"/><path class="arrow" d="M450 940 V995"/><path class="arrow" d="M450 1095 V1150"/>
+<polygon class="node" points="250,220 650,220 590,320 310,320" fill="#e0f2fe" stroke="#0284c7"/><text x="450" y="278" text-anchor="middle" font-size="23">Input nama, menu, jumlah</text>
+<rect class="node" x="220" y="375" width="460" height="100" rx="12" fill="#fef3c7" stroke="#d97706"/><text x="450" y="418" text-anchor="middle" font-size="23">Hitung subtotal</text><text x="450" y="451" text-anchor="middle" class="small">harga x jumlah</text>
+<polygon class="node" points="450,530 610,605 450,680 290,605" fill="#fee2e2" stroke="#dc2626"/><text x="450" y="612" text-anchor="middle" font-size="23">Tambah atau edit?</text>
+<rect class="node" x="220" y="685" width="460" height="100" rx="12" fill="#fef3c7" stroke="#d97706"/><text x="450" y="728" text-anchor="middle" font-size="23">Perbarui total belanja</text><text x="450" y="761" text-anchor="middle" class="small">total +/− subtotal</text>
+<polygon class="node" points="450,840 610,915 450,990 290,915" fill="#fee2e2" stroke="#dc2626"/><text x="450" y="922" text-anchor="middle" font-size="23">Uang cukup?</text>
+<rect class="node" x="220" y="995" width="460" height="100" rx="12" fill="#dcfce7" stroke="#059669"/><text x="450" y="1038" text-anchor="middle" font-size="23">Hitung kembalian</text><text x="450" y="1071" text-anchor="middle" class="small">uang bayar − total</text>
+<rect class="node" x="280" y="1150" width="340" height="70" rx="35" fill="#dbeafe" stroke="#2563eb"/><text x="450" y="1194" text-anchor="middle" font-size="25">Cetak struk dan selesai</text>
+<path d="M610 915 H790 V605 H615" class="arrow"/><text x="760" y="750" class="small" text-anchor="middle">Tidak: bayar lagi</text>
+</svg>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Masalah & Solusi | Warung Pak Din</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="masalah.html">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">P</span
+          ><span
+            ><strong>Warung Pak Din</strong
+            ><small>Media PjBL Pascal</small></span
+          ></a
+        >
+        <div class="nav-label">Materi proyek</div>
+        <nav class="nav-list" data-navigation></nav>
+      </aside>
+      <main class="main">
+        <div class="page">
+          <header class="page-header">
+            <p class="eyebrow">02 / Identifikasi masalah</p>
+            <h1>Dari antrean panjang ke alur kasir yang terukur.</h1>
+            <p class="lead">
+              Accordion berikut merangkum latar belakang, rumusan masalah, dan
+              solusi proyek.
+            </p>
+          </header>
+          <button class="accordion" aria-expanded="false">
+            Mengapa pencatatan manual menjadi masalah?
+          </button>
+          <div class="accordion-panel">
+            <p>
+              Perhitungan subtotal dari beberapa menu, perubahan jumlah pesanan,
+              dan uang kembalian mudah salah jika dikerjakan berulang secara
+              manual. Kesalahan kecil dapat memengaruhi total pembayaran dan
+              memperpanjang antrean.
+            </p>
+          </div>
+          <button class="accordion" aria-expanded="false">
+            Apa solusi yang dirancang?
+          </button>
+          <div class="accordion-panel">
+            <p>
+              Program Pascal menyimpan pesanan di dalam array of record,
+              menghitung subtotal otomatis, menyediakan edit pesanan, dan
+              mengulang validasi pembayaran sampai uang pelanggan mencukupi.
+            </p>
+          </div>
+          <button class="accordion" aria-expanded="false">
+            Rumusan masalah proyek
+          </button>
+          <div class="accordion-panel">
+            <ol>
+              <li>Bagaimana menyimpan banyak pesanan secara terstruktur?</li>
+              <li>Bagaimana menghitung total dan kembalian dengan tepat?</li>
+              <li>
+                Bagaimana menerapkan selection dan repetition dalam alur kasir?
+              </li>
+            </ol>
+          </div>
+          <section class="card" style="margin-top: 22px">
+            <h2>Tujuan program</h2>
+            <ul class="check-list">
+              <li>Membantu kasir mencatat pesanan pelanggan.</li>
+              <li>Mengurangi kesalahan hitung subtotal dan total.</li>
+              <li>Menjadi media latihan konsep dasar pemrograman Pascal.</li>
+            </ul>
+          </section>
+          <div class="footer-nav">
+            <a class="btn secondary" href="index.html">← Sebelumnya</a
+            ><a class="btn" href="input.html">Analisis input →</a>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

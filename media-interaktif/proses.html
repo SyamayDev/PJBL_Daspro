@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Proses Matematis | Warung Pak Din</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="proses.html">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">P</span
+          ><span
+            ><strong>Warung Pak Din</strong
+            ><small>Media PjBL Pascal</small></span
+          ></a
+        >
+        <div class="nav-label">Materi proyek</div>
+        <nav class="nav-list" data-navigation></nav>
+      </aside>
+      <main class="main">
+        <div class="page">
+          <header class="page-header">
+            <p class="eyebrow">04 / Process</p>
+            <h1>Rumus kecil, alur kasir yang lengkap.</h1>
+            <p class="lead">
+              Gunakan tabs untuk melihat bagaimana tiap tindakan pengguna
+              mengubah data transaksi.
+            </p>
+          </header>
+          <div data-tab-group>
+            <div class="tabs">
+              <button class="tab-button active" data-tab="tambah">Tambah</button
+              ><button class="tab-button" data-tab="edit">Edit</button
+              ><button class="tab-button" data-tab="bayar">Bayar</button>
+            </div>
+            <article class="tab-panel active" data-panel="tambah">
+              <h2>Menambahkan pesanan</h2>
+              <p>
+                Harga menu dikalikan jumlah yang dipilih. Hasilnya disimpan ke
+                record dan ditambahkan ke total transaksi.
+              </p>
+              <span class="formula"
+                >subtotalPesanan := hargaMenuDipilih * jumlah;<br />totalBelanja
+                := totalBelanja + subtotalPesanan;</span
+              >
+            </article>
+            <article class="tab-panel" data-panel="edit">
+              <h2>Mengurangi pesanan</h2>
+              <p>
+                Saat pelanggan mengurangi jumlah, program menghitung nilai yang
+                dikurangi lalu memperbarui subtotal dan total item.
+              </p>
+              <span class="formula"
+                >subtotalKurang := harga * jumlahKurang;<br />totalBelanja :=
+                totalBelanja - subtotalKurang;</span
+              >
+            </article>
+            <article class="tab-panel" data-panel="bayar">
+              <h2>Menghitung kembalian</h2>
+              <p>
+                Uang pembayaran hanya diterima bila tidak lebih kecil dari total
+                belanja.
+              </p>
+              <span class="formula"
+                >kembalian := uangBayar - totalBelanja;</span
+              >
+            </article>
+          </div>
+          <section class="card" style="margin-top: 20px">
+            <h2>Sequence yang terjadi</h2>
+            <p>
+              Input menu → tentukan harga dengan
+              <code class="inline-code">CASE OF</code> → hitung subtotal →
+              simpan ke array → perbarui total → tampilkan output.
+            </p>
+          </section>
+          <div class="footer-nav">
+            <a class="btn secondary" href="input.html">← Input</a
+            ><a class="btn" href="algoritma.html">Jalankan algoritma →</a>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

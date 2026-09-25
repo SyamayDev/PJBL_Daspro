@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Interaktif PjBL - Warung Pak Din</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ================= CSS (STYLING UTAMA) ================= */
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #0f172a;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        
+        /* Sidebar Navigasi */
+        .sidebar { width: 260px; background-color: var(--secondary); color: white; display: flex; flex-direction: column; overflow-y: auto; padding: 20px 0; box-shadow: 4px 0 10px rgba(0,0,0,0.1); z-index: 10; }
+        .sidebar h2 { font-size: 1.2rem; text-align: center; margin-bottom: 20px; padding: 0 15px; color: #60a5fa; }
+        .nav-btn { background: none; border: none; color: #cbd5e1; text-align: left; padding: 15px 25px; width: 100%; cursor: pointer; font-family: inherit; font-size: 1rem; transition: all 0.3s; border-left: 4px solid transparent; }
+        .nav-btn:hover { background-color: #1e293b; color: white; }
+        .nav-btn.active { background-color: #1e293b; border-left-color: var(--primary); color: white; font-weight: 600; }
+
+        /* Area Konten Utama */
+        .main-content { flex: 1; overflow-y: auto; padding: 40px; position: relative; }
+        .section { display: none; animation: fadeIn 0.4s ease-in-out; max-width: 900px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tipografi & Umum */
+        h1 { color: var(--secondary); font-size: 2rem; margin-bottom: 10px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        h3 { color: var(--primary); margin: 20px 0 10px 0; }
+        p { line-height: 1.6; margin-bottom: 15px; }
+        .btn { display: inline-block; background-color: var(--primary); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600; border: none; cursor: pointer; transition: 0.3s; margin-top: 15px; }
+        .btn:hover { background-color: var(--primary-hover); transform: scale(1.02); }
+
+        /* Interaktif Halaman 2 (Accordion Masalah) */
+        .accordion { background-color: #f1f5f9; cursor: pointer; padding: 18px; width: 100%; text-align: left; border: none; outline: none; transition: 0.4s; font-weight: 600; font-size: 1rem; border-radius: 8px; margin-top: 10px; border-left: 5px solid var(--primary); }
+        .accordion:hover { background-color: #e2e8f0; }
+        .panel { padding: 0 18px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; border-radius: 0 0 8px 8px; margin-bottom: 10px; }
+        
+        /* Halaman 3 (Tabel Input) */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; border: 1px solid var(--border); text-align: left; }
+        th { background-color: var(--secondary); color: white; }
+        tr.hoverable:hover { background-color: #eff6ff; cursor: pointer; }
+
+        /* Halaman 4 & 7 (Tabs) */
+        .tabs { display: flex; gap: 10px; margin-bottom: 15px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+        .tab-btn { background: none; border: none; padding: 8px 15px; font-weight: 600; cursor: pointer; color: var(--text-main); border-radius: 6px; }
+        .tab-btn.active { background: var(--primary); color: white; }
+        .tab-content { display: none; padding: 15px; background: #f8fafc; border-radius: 8px; border: 1px solid var(--border); }
+        .tab-content.active { display: block; animation: fadeIn 0.3s; }
+        
+        /* Halaman 5 (Algoritma Step by Step) */
+        .step-list { list-style-type: none; }
+        .step-list li { padding: 15px; margin-bottom: 10px; background: #f1f5f9; border-radius: 6px; border-left: 4px solid #cbd5e1; transition: 0.3s; opacity: 0.5; }
+        .step-list li.highlighted { border-left-color: var(--primary); background: #eff6ff; opacity: 1; transform: scale(1.02); font-weight: 600; }
+
+        /* Halaman 7 (Code Block) */
+        pre { background: #1e293b; color: #f8fafc; padding: 15px; border-radius: 8px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.5; }
+        code .keyword { color: #c678dd; } code .string { color: #98c379; } code .comment { color: #7f848e; font-style: italic; } code .tipe { color: #e5c07b; }
+
+        /* Halaman 8 (Simulasi Kasir) */
+        .simulasi-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-family: inherit; }
+        .struk { background: #fffbeb; padding: 20px; border: 2px dashed #f59e0b; font-family: 'Fira Code', monospace; border-radius: 8px; min-height: 250px; }
+        .struk h3 { text-align: center; border-bottom: 1px dashed #333; padding-bottom: 10px; margin-top: 0; color: #333;}
+        
+        /* Halaman 9 (Quiz) */
+        .quiz-card { background: white; padding: 20px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 15px; }
+        .quiz-option { display: block; padding: 10px; margin: 5px 0; border-radius: 5px; background: #f1f5f9; cursor: pointer; transition: 0.2s; }
+        .quiz-option:hover { background: #e2e8f0; }
+        .quiz-feedback { margin-top: 10px; padding: 10px; border-radius: 5px; display: none; font-weight: 600; }
+        .feedback-benar { background: #d1fae5; color: #065f46; display: block; }
+        .feedback-salah { background: #fee2e2; color: #991b1b; display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- ================= SIDEBAR NAVIGASI ================= -->
+    <aside class="sidebar">
+        <h2>🍔 PjBL Warung Pak Din</h2>
+        <button class="nav-btn active" onclick="showSection('sec-home', this)">1. Home</button>
+        <button class="nav-btn" onclick="showSection('sec-masalah', this)">2. Masalah</button>
+        <button class="nav-btn" onclick="showSection('sec-input', this)">3. Input Data</button>
+        <button class="nav-btn" onclick="showSection('sec-process', this)">4. Proses Matematis</button>
+        <button class="nav-btn" onclick="showSection('sec-algoritma', this)">5. Algoritma</button>
+        <button class="nav-btn" onclick="showSection('sec-flowchart', this)">6. Flowchart</button>
+        <button class="nav-btn" onclick="showSection('sec-code', this)">7. Source Code</button>
+        <button class="nav-btn" onclick="showSection('sec-simulasi', this)">8. Simulasi Kasir</button>
+        <button class="nav-btn" onclick="showSection('sec-quiz', this)">9. Quiz Interaktif</button>
+        <button class="nav-btn" onclick="showSection('sec-kesimpulan', this)">10. Kesimpulan</button>
+    </aside>
+
+    <!-- ================= KONTEN UTAMA ================= -->
+    <main class="main-content">
+        
+        <!-- HALAMAN 1: HOME -->
+        <section id="sec-home" class="section active">
+            <h1>Sistem Pemesanan Makanan "Warung Pak Din"</h1>
+            <p><strong>Media Pembelajaran Interaktif | Project-Based Learning (PjBL) Dasar Pemrograman</strong></p>
+            <div style="text-align: center; margin: 40px 0;">
+                <h1 style="font-size: 5rem; border:none; margin:0;">💻👨‍💻</h1>
+                <h3>"Build It – Run It – Explain It"</h3>
+                <p>Implementasi Struktur Pemrograman menggunakan Bahasa <strong>Pascal</strong>.</p>
+            </div>
+            <h3>Identitas Kelompok</h3>
+            <ul>
+                <li><strong>Project Manager:</strong> [Nama Anda]</li>
+                <li><strong>Programmer/Algorithm:</strong> [Nama Anggota 2]</li>
+                <li><strong>Media Designer:</strong> [Nama Anggota 3]</li>
+            </ul>
+            <button class="btn" style="width: 100%; margin-top: 30px; font-size: 1.2rem;" onclick="showSection('sec-masalah', document.querySelectorAll('.nav-btn')[1])">MULAI PEMBELAJARAN 🚀</button>
+        </section>
+
+        <!-- HALAMAN 2: MASALAH -->
+        <section id="sec-masalah" class="section">
+            <h1>Identifikasi Masalah & Solusi</h1>
+            <p>Klik panel di bawah ini untuk melihat latar belakang masalah dan solusi yang ditawarkan.</p>
+            
+            <button class="accordion">🔻 Masalah Sistem Manual (Klik)</button>
+            <div class="panel">
+                <p><br>Pencatatan pesanan di warung secara manual sering memicu <i>human error</i> dalam menghitung subtotal pesanan yang banyak. Proses perhitungan kembalian uang juga memakan waktu sehingga antrean kasir menjadi panjang.</p>
+            </div>
+
+            <button class="accordion">🔻 Solusi: Program Pascal (Klik)</button>
+            <div class="panel">
+                <p><br>Membangun aplikasi kasir terminal dengan algoritma Pascal yang menerapkan:<br>
+                1. Otomatisasi perhitungan subtotal & total.<br>
+                2. Manajemen <i>Array</i> untuk menyimpan, mengedit, dan menghapus pesanan dinamis.<br>
+                3. Validasi perulangan pembayaran untuk mencegah uang kurang.</p>
+            </div>
+        </section>
+
+        <!-- HALAMAN 3: INPUT -->
+        <section id="sec-input" class="section">
+            <h1>Struktur Data (Input)</h1>
+            <p>Arahkan kursor atau klik pada baris tabel untuk melihat detail validasi input yang digunakan dalam variabel.</p>
+            <table>
+                <tr>
+                    <th>Nama Variabel</th>
+                    <th>Tipe Data</th>
+                    <th>Fungsi</th>
+                </tr>
+                <tr class="hoverable" onclick="alert('Validasi: Jika jumlah <= 0, maka program menampilkan error \'Jumlah pesanan tidak valid!\' dan meminta ulang.')">
+                    <td><code>jumlah</code></td>
+                    <td>Integer</td>
+                    <td>Kuantitas porsi (Klik untuk detail)</td>
+                </tr>
+                <tr class="hoverable" onclick="alert('Program Pascal membatasi hingga 50 karakter untuk efisiensi memori.')">
+                    <td><code>namaPelanggan</code></td>
+                    <td>String[50]</td>
+                    <td>Menyimpan nama pembeli</td>
+                </tr>
+                <tr class="hoverable" onclick="alert('Jika pilihan di luar angka 1-30, muncul peringatan menu tidak tersedia menggunakan logika CASE OF.')">
+                    <td><code>pilihanMenu</code></td>
+                    <td>Integer</td>
+                    <td>Nomor menu makanan/minuman (1-30)</td>
+                </tr>
+                <tr class="hoverable" onclick="alert('Jika uangBayar < totalBelanja, perulangan REPEAT..UNTIL akan terus meminta input tambahan.')">
+                    <td><code>uangBayar</code></td>
+                    <td>Longint</td>
+                    <td>Nominal uang dari pelanggan</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- HALAMAN 4: PROSES MATEMATIS -->
+        <section id="sec-process" class="section">
+            <h1>Proses Pengolahan & Rumus</h1>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab(event, 'rumus-tambah')">1. Tambah Pesanan</button>
+                <button class="tab-btn" onclick="openTab(event, 'rumus-edit')">2. Edit / Kurang</button>
+                <button class="tab-btn" onclick="openTab(event, 'rumus-bayar')">3. Pembayaran</button>
+            </div>
+
+            <div id="rumus-tambah" class="tab-content active">
+                <h3>Kalkulasi Penambahan</h3>
+                <p><code>subtotal = hargaMenu * jumlah</code></p>
+                <p><code>totalBelanja = totalBelanja + subtotal</code></p>
+                <p>Algoritma ini dieksekusi setiap kali user menekan opsi tambah menu.</p>
+            </div>
+            <div id="rumus-edit" class="tab-content">
+                <h3>Kalkulasi Pengurangan (Edit)</h3>
+                <p><code>subtotalKurang = hargaItem * jumlahKurang</code></p>
+                <p><code>totalBelanja = totalBelanja - subtotalKurang</code></p>
+                <p>Jika `porsiAkhir == 0`, jalankan <i>Array Shifting</i> untuk menghapus elemen pesanan.</p>
+            </div>
+            <div id="rumus-bayar" class="tab-content">
+                <h3>Kalkulasi Kasir</h3>
+                <p><code>kembalian = uangBayar - totalBelanja</code></p>
+                <p>Divalidasi dengan logika kondisi <code>IF uangBayar >= totalBelanja THEN ...</code></p>
+            </div>
+        </section>
+
+        <!-- HALAMAN 5: ALGORITMA -->
+        <section id="sec-algoritma" class="section">
+            <h1>Langkah-Langkah Algoritma</h1>
+            <p>Jalankan simulasi langkah algoritma dari awal hingga akhir transaksi.</p>
+            <button class="btn" onclick="nextStep()" style="margin-bottom: 20px;">Langkah Selanjutnya ⏭</button>
+            <button class="btn" style="background-color: #64748b;" onclick="resetStep()">Reset</button>
+
+            <ul class="step-list" id="step-list">
+                <li id="step1">1. <b>Mulai:</b> Inisialisasi variabel totalBelanja = 0, jumlahPesanan = 0.</li>
+                <li id="step2">2. <b>Input:</b> Masukkan Nama Pelanggan.</li>
+                <li id="step3">3. <b>Looping Pesanan:</b> Tampilkan daftar 30 menu. Pengguna memilih menu dan jumlah.</li>
+                <li id="step4">4. <b>Pemrosesan:</b> Hitung subtotal. Simpan ke dalam <i>Array of Record</i>.</li>
+                <li id="step5">5. <b>Looping Pembayaran:</b> Meminta uang bayar. Validasi jika kurang.</li>
+                <li id="step6">6. <b>Cetak Struk:</b> Cetak nama, seluruh isi array pesanan, total, dan kembalian. Selesai.</li>
+            </ul>
+        </section>
+
+        <!-- HALAMAN 6: FLOWCHART -->
+        <section id="sec-flowchart" class="section">
+            <h1>Flowchart Sistem (Interaktif)</h1>
+            <p>Diagram alir logika program. (<i>Hover</i> elemen untuk penjelasan).</p>
+            
+            <div style="display:flex; flex-direction:column; align-items:center; gap: 15px; margin-top:20px;">
+                <div style="background:#e2e8f0; padding:10px 40px; border-radius:50px; border:2px solid #334155; font-weight:bold; cursor:help;" title="Start/Terminator Symbol: Memulai program">Mulai</div>
+                <div>⬇️</div>
+                <div style="background:#bae6fd; padding:15px; transform: skewX(-15deg); border:2px solid #0284c7; cursor:help;" title="Input Symbol: Membaca Input Pengguna"><span style="display:inline-block; transform: skewX(15deg);">Input Pilihan Menu & Jumlah</span></div>
+                <div>⬇️</div>
+                <div style="background:#fef08a; padding:15px; border:2px solid #ca8a04; cursor:help;" title="Process Symbol: Menjalankan kalkulasi matematis">Hitung: Total = Total + (Harga * Jumlah)</div>
+                <div>⬇️</div>
+                <div style="background:#fecaca; padding:20px; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); width: 250px; text-align:center; border:2px solid #dc2626; cursor:help;" title="Decision Symbol: Pengecekan kondisi boolean (IF THEN)">Uang >= Total ?</div>
+                <div>⬇️ (Jika Ya)</div>
+                <div style="background:#bbf7d0; padding:15px; border-radius:10px; border:2px solid #16a34a; border-style:dashed; cursor:help;" title="Sub-Routine/Document: Mencetak hasil struk">Cetak Struk Kembalian</div>
+                <div>⬇️</div>
+                <div style="background:#e2e8f0; padding:10px 40px; border-radius:50px; border:2px solid #334155; font-weight:bold;">Selesai</div>
+            </div>
+        </section>
+
+        <!-- HALAMAN 7: SOURCE CODE -->
+        <section id="sec-code" class="section">
+            <h1>Analisis Source Code Pascal</h1>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openCodeTab(event, 'code-record')">Record & Array</button>
+                <button class="tab-btn" onclick="openCodeTab(event, 'code-case')">CASE OF Menu</button>
+                <button class="tab-btn" onclick="openCodeTab(event, 'code-loop')">REPEAT Validasi</button>
+            </div>
+
+            <div id="code-record" class="tab-content active">
+<pre><code><span class="keyword">type</span>
+    TPesanan = <span class="keyword">record</span>
+        namaMenu : <span class="tipe">string</span>[40];
+        harga    : <span class="tipe">longint</span>;
+        jumlah   : <span class="tipe">integer</span>;
+        subtotal : <span class="tipe">longint</span>;
+    <span class="keyword">end</span>;
+<span class="keyword">var</span>
+    pesanan : <span class="keyword">array</span>[1..100] <span class="keyword">of</span> TPesanan;
+    jumlahPesanan : <span class="tipe">integer</span>;</code></pre>
+            </div>
+            
+            <div id="code-case" class="tab-content">
+<pre><code><span class="comment">// Memilih menu menggunakan percabangan</span>
+<span class="keyword">case</span> pilihanMenu <span class="keyword">of</span>
+    1: <span class="keyword">begin</span>
+        namaItem := <span class="string">'Nasi Goreng Spesial'</span>;
+        hargaItem := 20000;
+       <span class="keyword">end</span>;
+    2: <span class="keyword">begin</span>
+        namaItem := <span class="string">'Ayam Geprek'</span>;
+        hargaItem := 15000;
+       <span class="keyword">end</span>;
+<span class="keyword">else</span>
+    <span class="keyword">writeln</span>(<span class="string">'Menu tidak tersedia!'</span>);
+<span class="keyword">end</span>;</code></pre>
+            </div>
+
+            <div id="code-loop" class="tab-content">
+<pre><code><span class="comment">// Loop hingga uang mencukupi</span>
+<span class="keyword">repeat</span>
+    <span class="keyword">write</span>(<span class="string">'Masukkan uang bayar: Rp'</span>);
+    <span class="keyword">readln</span>(uangBayar);
+    
+    <span class="keyword">if</span> uangBayar < totalBelanja <span class="keyword">then</span>
+        <span class="keyword">writeln</span>(<span class="string">'Uang kurang Rp'</span>, totalBelanja - uangBayar);
+<span class="keyword">until</span> uangBayar >= totalBelanja;
+
+kembalian := uangBayar - totalBelanja;</code></pre>
+            </div>
+        </section>
+
+        <!-- HALAMAN 8: SIMULASI KASIR -->
+        <section id="sec-simulasi" class="section">
+            <h1>Simulasi Program Kasir</h1>
+            <p>Uji coba fungsionalitas logika program Pascal yang dikonversi ke dalam manipulasi DOM JavaScript.</p>
+            
+            <div class="simulasi-container">
+                <!-- Form Input -->
+                <div class="simulasi-form">
+                    <div class="form-group">
+                        <label>Pilih Menu:</label>
+                        <select id="sim-menu">
+                            <option value="20000">Nasi Goreng Spesial (Rp 20.000)</option>
+                            <option value="15000">Ayam Geprek Level 5 (Rp 15.000)</option>
+                            <option value="5000">Es Teh Manis (Rp 5.000)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Jumlah Porsi:</label>
+                        <input type="number" id="sim-qty" min="1" value="1">
+                    </div>
+                    <button class="btn" style="width:100%; margin-bottom:20px;" onclick="tambahPesanan()">Tambah ke Pesanan ➕</button>
+                    
+                    <div class="form-group">
+                        <label>Uang Bayar (Rp):</label>
+                        <input type="number" id="sim-uang" placeholder="Contoh: 50000">
+                    </div>
+                    <button class="btn" style="background:#10b981; width:100%;" onclick="prosesBayar()">Proses Pembayaran 💸</button>
+                </div>
+
+                <!-- Struk Output -->
+                <div class="struk" id="sim-struk">
+                    <h3>WARUNG PAK DIN</h3>
+                    <div id="struk-items"><i>Belum ada pesanan...</i></div>
+                    <hr style="border:1px dashed #333; margin:10px 0;">
+                    <div id="struk-total"><b>Total: Rp 0</b></div>
+                    <div id="struk-bayar">Tunai: Rp 0</div>
+                    <div id="struk-kembali">Kembali: Rp 0</div>
+                    <p id="struk-msg" style="color:red; font-weight:bold; margin-top:10px;"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HALAMAN 9: QUIZ -->
+        <section id="sec-quiz" class="section">
+            <h1>Uji Pemahaman (Quiz)</h1>
+            <p>Jawab pertanyaan berikut untuk mengevaluasi pemahaman logika pemrograman.</p>
+            
+            <div class="quiz-card">
+                <p><b>1. Apa tipe data yang paling tepat untuk menyimpan 'Harga Makanan' dalam Pascal agar bisa menampung nominal besar seperti 100.000?</b></p>
+                <label class="quiz-option"><input type="radio" name="q1" value="salah"> Integer</label>
+                <label class="quiz-option"><input type="radio" name="q1" value="benar"> Longint</label>
+                <label class="quiz-option"><input type="radio" name="q1" value="salah"> String</label>
+                <div id="fb-q1" class="quiz-feedback"></div>
+            </div>
+
+            <div class="quiz-card">
+                <p><b>2. Algoritma perulangan apa yang menjamin pertanyaan meminta uang diulang minimal satu kali hingga uang mencukupi?</b></p>
+                <label class="quiz-option"><input type="radio" name="q2" value="salah"> FOR .. DO</label>
+                <label class="quiz-option"><input type="radio" name="q2" value="benar"> REPEAT .. UNTIL</label>
+                <label class="quiz-option"><input type="radio" name="q2" value="salah"> WHILE .. DO</label>
+                <div id="fb-q2" class="quiz-feedback"></div>
+            </div>
+
+            <button class="btn" onclick="cekQuiz()">Cek Jawaban ✔️</button>
+        </section>
+
+        <!-- HALAMAN 10: KESIMPULAN -->
+        <section id="sec-kesimpulan" class="section">
+            <h1>Kesimpulan & Refleksi</h1>
+            <div style="background:#eff6ff; padding:20px; border-radius:8px; border-left:5px solid var(--primary);">
+                <h3>🎯 Pencapaian Proyek</h3>
+                <p>Program "Warung Pak Din" sukses mengatasi masalah pencatatan manual. Implementasi Array of Record mempermudah manajemen data pesanan majemuk secara terstruktur di memori.</p>
+                
+                <h3>💡 Refleksi Pengkodean</h3>
+                <p>Tantangan terbesar yang diselesaikan adalah <b>Array Shifting</b> pada saat manipulasi fitur "Edit Pesanan" dan menjaga agar Total Belanja selalu tersinkronisasi tanpa redundansi perhitungan.</p>
+                
+                <h3>🚀 Tindak Lanjut</h3>
+                <p>Untuk pengembangan selanjutnya, proyek Pascal ini siap ditambahkan fitur File Handling (<code>AssignFile</code>, <code>Rewrite</code>) guna menyimpan riwayat transaksi harian secara permanen (.txt).</p>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn" style="background-color: var(--secondary); font-size: 1.1rem;" onclick="showSection('sec-home', document.querySelectorAll('.nav-btn')[0])">🏠 Kembali ke Halaman Utama</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= JAVASCRIPT (LOGIKA INTERAKTIF) ================= -->
+    <script>
+        // 1. Logika Navigasi Sidebar (SPA Routing Simulation)
+        function showSection(sectionId, btnElement) {
+            // Sembunyikan semua section
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            // Tampilkan section yang dituju
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Ubah state active pada tombol navigasi
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+        }
+
+        // 2. Logika Accordion (Halaman Masalah)
+        const accordions = document.querySelectorAll('.accordion');
+        accordions.forEach(acc => {
+            acc.addEventListener('click', function() {
+                this.classList.toggle('active');
+                let panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                } 
+            });
+        });
+
+        // 3. Logika Tab Navigasi (Halaman Proses & Code)
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementById('sec-process').getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) tabcontent[i].classList.remove("active");
+            
+            tablinks = document.getElementById('sec-process').getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
+            
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function openCodeTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementById('sec-code').getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) tabcontent[i].classList.remove("active");
+            
+            tablinks = document.getElementById('sec-code').getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) tablinks[i].classList.remove("active");
+            
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        // 4. Logika Step-by-Step Highlighter (Algoritma)
+        let currentStep = 0;
+        function nextStep() {
+            const steps = document.querySelectorAll('.step-list li');
+            if (currentStep < steps.length) {
+                // Remove highlight from previous
+                if(currentStep > 0) steps[currentStep-1].classList.remove('highlighted');
+                // Add to current
+                steps[currentStep].classList.add('highlighted');
+                currentStep++;
+            }
+        }
+        function resetStep() {
+            const steps = document.querySelectorAll('.step-list li');
+            steps.forEach(s => s.classList.remove('highlighted'));
+            currentStep = 0;
+        }
+
+        // 5. Logika Simulasi Kasir (Manipulasi DOM Interaktif)
+        let cart = [];
+        let totalBelanja = 0;
+
+        function tambahPesanan() {
+            const menuSelect = document.getElementById('sim-menu');
+            const qty = parseInt(document.getElementById('sim-qty').value);
+            
+            if(qty <= 0) { alert('Jumlah tidak valid!'); return; }
+            
+            const harga = parseInt(menuSelect.value);
+            const nama = menuSelect.options[menuSelect.selectedIndex].text.split(' (')[0]; // Ambil nama saja
+            const subtotal = harga * qty;
+            
+            cart.push({nama, qty, subtotal});
+            totalBelanja += subtotal;
+            renderStruk();
+            
+            // Reset input message
+            document.getElementById('struk-msg').innerText = '';
+        }
+
+        function renderStruk() {
+            const container = document.getElementById('struk-items');
+            if(cart.length === 0) {
+                container.innerHTML = '<i>Belum ada pesanan...</i>';
+            } else {
+                container.innerHTML = cart.map(item => 
+                    `<div>${item.nama}<br>${item.qty} x ${item.subtotal/item.qty} = <b>${item.subtotal}</b></div>`
+                ).join('<br>');
+            }
+            document.getElementById('struk-total').innerHTML = `<b>Total: Rp ${totalBelanja}</b>`;
+        }
+
+        function prosesBayar() {
+            if(totalBelanja === 0) {
+                document.getElementById('struk-msg').innerText = 'Pesan menu terlebih dahulu!';
+                return;
+            }
+            
+            const uang = parseInt(document.getElementById('sim-uang').value) || 0;
+            const msg = document.getElementById('struk-msg');
+            
+            document.getElementById('struk-bayar').innerText = `Tunai: Rp ${uang}`;
+            
+            if (uang < totalBelanja) {
+                msg.style.color = "red";
+                msg.innerText = `Uang kurang Rp ${totalBelanja - uang}! (Loop Aktif)`;
+                document.getElementById('struk-kembali').innerText = `Kembali: Rp 0`;
+            } else {
+                const kembali = uang - totalBelanja;
+                msg.style.color = "green";
+                msg.innerText = `Transaksi Berhasil!`;
+                document.getElementById('struk-kembali').innerText = `Kembali: Rp ${kembali}`;
+                
+                // Reset kasir array simulasi
+                setTimeout(() => {
+                    if(confirm('Transaksi selesai. Reset kasir?')) {
+                        cart = []; totalBelanja = 0; renderStruk();
+                        document.getElementById('sim-uang').value = '';
+                        document.getElementById('struk-bayar').innerText = `Tunai: Rp 0`;
+                        document.getElementById('struk-kembali').innerText = `Kembali: Rp 0`;
+                        msg.innerText = '';
+                    }
+                }, 1500);
+            }
+        }
+
+        // 6. Logika Evaluasi Quiz
+        function cekQuiz() {
+            // Soal 1
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const fb1 = document.getElementById('fb-q1');
+            if (q1) {
+                if(q1.value === 'benar') {
+                    fb1.className = 'quiz-feedback feedback-benar';
+                    fb1.innerText = 'Jawaban Benar! Integer maksimal hanya ~32.767, sedangkan Longint bisa sampai milyaran.';
+                } else {
+                    fb1.className = 'quiz-feedback feedback-salah';
+                    fb1.innerText = 'Salah! Nominal harga makanan bisa lebih dari 32.767, jadi butuh tipe data yang lebih besar.';
+                }
+            }
+
+            // Soal 2
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const fb2 = document.getElementById('fb-q2');
+            if (q2) {
+                if(q2.value === 'benar') {
+                    fb2.className = 'quiz-feedback feedback-benar';
+                    fb2.innerText = 'Jawaban Benar! REPEAT..UNTIL mengeksekusi kode minimal satu kali sebelum mengecek kondisi di akhir (Post-test loop).';
+                } else {
+                    fb2.className = 'quiz-feedback feedback-salah';
+                    fb2.innerText = 'Salah! WHILE DO mengecek di awal (Pre-test loop), jadi ada kemungkinan blok kasir tidak tereksekusi sama sekali jika kondisi awal salah.';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

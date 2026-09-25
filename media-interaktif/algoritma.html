@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Algoritma | Warung Pak Din</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="algoritma.html">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">P</span
+          ><span
+            ><strong>Warung Pak Din</strong
+            ><small>Media PjBL Pascal</small></span
+          ></a
+        >
+        <div class="nav-label">Materi proyek</div>
+        <nav class="nav-list" data-navigation></nav>
+      </aside>
+      <main class="main">
+        <div class="page">
+          <header class="page-header">
+            <p class="eyebrow">05 / Algoritma</p>
+            <h1>Ikuti transaksi langkah demi langkah.</h1>
+            <p class="lead">
+              Stepper ini memperlihatkan sequence, selection, dan repetition
+              yang menggerakkan program.
+            </p>
+            <div class="actions">
+              <button class="btn" data-step-next>Langkah berikutnya →</button
+              ><button class="btn secondary" data-step-reset>
+                Mulai ulang
+              </button>
+            </div>
+          </header>
+          <div class="stepper">
+            <article class="step">
+              <span class="step-number">01</span>
+              <div>
+                <h3>Inisialisasi</h3>
+                <p>
+                  Atur <code class="inline-code">jumlahPesanan</code>,
+                  <code class="inline-code">totalItem</code>, dan
+                  <code class="inline-code">totalBelanja</code> menjadi nol.
+                </p>
+              </div>
+            </article>
+            <article class="step">
+              <span class="step-number">02</span>
+              <div>
+                <h3>Input pelanggan</h3>
+                <p>Program meminta nama pelanggan sebelum transaksi dimulai.</p>
+              </div>
+            </article>
+            <article class="step">
+              <span class="step-number">03</span>
+              <div>
+                <h3>Kelola pesanan</h3>
+                <p>
+                  Dalam <code class="inline-code">REPEAT UNTIL</code>, pengguna
+                  dapat menambah, melihat, atau mengedit pesanan.
+                </p>
+              </div>
+            </article>
+            <article class="step">
+              <span class="step-number">04</span>
+              <div>
+                <h3>Hitung dan simpan</h3>
+                <p>
+                  Harga dan jumlah diproses menjadi subtotal lalu disimpan dalam
+                  array of record.
+                </p>
+              </div>
+            </article>
+            <article class="step">
+              <span class="step-number">05</span>
+              <div>
+                <h3>Validasi pembayaran</h3>
+                <p>
+                  Jika uang kurang, loop pembayaran meminta nominal baru hingga
+                  mencukupi.
+                </p>
+              </div>
+            </article>
+            <article class="step">
+              <span class="step-number">06</span>
+              <div>
+                <h3>Cetak output</h3>
+                <p>
+                  Program menampilkan struk berisi pesanan, total pembayaran,
+                  dan kembalian.
+                </p>
+              </div>
+            </article>
+          </div>
+          <div class="footer-nav">
+            <a class="btn secondary" href="proses.html">← Proses</a
+            ><a class="btn" href="flowchart.html">Lihat flowchart →</a>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quiz | Warung Pak Din</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="quiz.html">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">P</span
+          ><span
+            ><strong>Warung Pak Din</strong
+            ><small>Media PjBL Pascal</small></span
+          ></a
+        >
+        <div class="nav-label">Materi proyek</div>
+        <nav class="nav-list" data-navigation></nav>
+      </aside>
+      <main class="main">
+        <div class="page">
+          <header class="page-header">
+            <p class="eyebrow">09 / Quiz interaktif</p>
+            <h1>Sudah siap menjelaskan logikanya?</h1>
+            <p class="lead">
+              Jawab tiga pertanyaan berikut. Progress bar dan kartu nilai akan
+              diperbarui secara otomatis.
+            </p>
+            <div class="quiz-progress" aria-label="Kemajuan quiz">
+              <div class="quiz-progress-bar"></div>
+            </div>
+          </header>
+          <form id="quiz-form">
+            <fieldset class="question" data-answer="b">
+              <legend>
+                1. Struktur apa yang memilih nama dan harga berdasarkan nomor
+                menu?
+              </legend>
+              <label class="option"
+                ><input type="radio" name="q1" value="a" /> FOR</label
+              ><label class="option"
+                ><input type="radio" name="q1" value="b" /> CASE OF</label
+              ><label class="option"
+                ><input type="radio" name="q1" value="c" /> WHILE</label
+              >
+            </fieldset>
+            <fieldset class="question" data-answer="c">
+              <legend>2. Rumus subtotal pesanan adalah ...</legend>
+              <label class="option"
+                ><input type="radio" name="q2" value="a" /> harga +
+                jumlah</label
+              ><label class="option"
+                ><input type="radio" name="q2" value="b" /> total - harga</label
+              ><label class="option"
+                ><input type="radio" name="q2" value="c" /> harga *
+                jumlah</label
+              >
+            </fieldset>
+            <fieldset class="question" data-answer="a">
+              <legend>3. Kapan perulangan pembayaran berhenti?</legend>
+              <label class="option"
+                ><input type="radio" name="q3" value="a" /> Saat uang bayar >=
+                total belanja</label
+              ><label class="option"
+                ><input type="radio" name="q3" value="b" /> Saat pelanggan
+                memasukkan nama</label
+              ><label class="option"
+                ><input type="radio" name="q3" value="c" /> Saat menu bernilai
+                0</label
+              >
+            </fieldset>
+            <button class="btn" type="submit">Kirim jawaban & cek nilai</button>
+          </form>
+          <section id="quiz-result" class="result">
+            <div class="score" id="score">0/100</div>
+            <h2>Hasil quiz</h2>
+            <p data-result-message></p>
+          </section>
+          <div class="footer-nav">
+            <a class="btn secondary" href="simulasi.html">← Simulasi</a
+            ><a class="btn" href="kesimpulan.html">Refleksi proyek →</a>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

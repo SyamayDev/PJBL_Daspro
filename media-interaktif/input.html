@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Input Data | Warung Pak Din</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="input.html">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">P</span
+          ><span
+            ><strong>Warung Pak Din</strong
+            ><small>Media PjBL Pascal</small></span
+          ></a
+        >
+        <div class="nav-label">Materi proyek</div>
+        <nav class="nav-list" data-navigation></nav>
+      </aside>
+      <main class="main">
+        <div class="page">
+          <header class="page-header">
+            <p class="eyebrow">03 / Input</p>
+            <h1>Data masuk harus punya tempat dan tipe.</h1>
+            <p class="lead">
+              Klik baris tabel untuk melihat peran data dan validasi yang
+              dilakukan program.
+            </p>
+          </header>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Tipe Pascal</th>
+                  <th>Peran</th>
+                  <th>Validasi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  data-detail="Nama disimpan sebagai string dengan panjang maksimal 50 karakter."
+                >
+                  <td><code class="inline-code">namaPelanggan</code></td>
+                  <td>string[50]</td>
+                  <td>Identitas pembeli</td>
+                  <td>Boleh berupa teks nama</td>
+                </tr>
+                <tr
+                  data-detail="Nomor menu harus berada di antara 1 dan 30 sebelum CASE OF dijalankan."
+                >
+                  <td><code class="inline-code">pilihanMenu</code></td>
+                  <td>integer</td>
+                  <td>Menu yang dipilih</td>
+                  <td>1 sampai 30</td>
+                </tr>
+                <tr
+                  data-detail="Jumlah nol atau negatif ditolak agar subtotal tidak menghasilkan data transaksi yang tidak masuk akal."
+                >
+                  <td><code class="inline-code">jumlah</code></td>
+                  <td>integer</td>
+                  <td>Kuantitas menu</td>
+                  <td>Lebih besar dari 0</td>
+                </tr>
+                <tr
+                  data-detail="Uang kurang memicu perulangan pembayaran sampai nilainya mencukupi total belanja."
+                >
+                  <td><code class="inline-code">uangBayar</code></td>
+                  <td>longint</td>
+                  <td>Nominal pembayaran</td>
+                  <td>Minimal sama dengan total</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p id="table-detail" class="card muted" style="margin-top: 16px">
+            Pilih sebuah baris untuk melihat catatan validasinya.
+          </p>
+          <section class="card" style="margin-top: 18px">
+            <h2>Struktur penyimpanan pesanan</h2>
+            <p>
+              Setiap item memakai record
+              <code class="inline-code">TPesanan</code> berisi nama menu, harga,
+              jumlah, dan subtotal. Array
+              <code class="inline-code">pesanan[1..100]</code> menyimpan hingga
+              100 jenis pesanan.
+            </p>
+          </section>
+          <div class="footer-nav">
+            <a class="btn secondary" href="masalah.html">← Masalah</a
+            ><a class="btn" href="proses.html">Lihat proses →</a>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () =>
+        document
+          .querySelectorAll("[data-detail]")
+          .forEach((row) =>
+            row.addEventListener(
+              "click",
+              () =>
+                (document.querySelector("#table-detail").textContent =
+                  row.dataset.detail),
+            ),
+          ),
+      );
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

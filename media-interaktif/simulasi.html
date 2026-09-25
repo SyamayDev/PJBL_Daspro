@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Simulasi Kasir | Warung Pak Din</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="simulasi.html">
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">P</span
+          ><span
+            ><strong>Warung Pak Din</strong
+            ><small>Media PjBL Pascal</small></span
+          ></a
+        >
+        <div class="nav-label">Materi proyek</div>
+        <nav class="nav-list" data-navigation></nav>
+      </aside>
+      <main class="main">
+        <div class="page">
+          <header class="page-header">
+            <p class="eyebrow">08 / Simulasi</p>
+            <h1>Jalankan satu transaksi di browser.</h1>
+            <p class="lead">
+              Ubah input di kiri dan lihat struk berubah real-time. Logikanya
+              mengikuti subtotal dan kembalian pada program Pascal.
+            </p>
+          </header>
+          <div class="sim-grid">
+            <form id="cashier-form" class="card">
+              <div class="field">
+                <label for="customer-name">Nama pelanggan</label
+                ><input id="customer-name" value="Sinta" required />
+              </div>
+              <div class="field">
+                <label for="menu-select">Menu</label
+                ><select id="menu-select"></select>
+              </div>
+              <div class="field">
+                <label for="quantity">Jumlah</label
+                ><input id="quantity" type="number" min="1" value="2" />
+              </div>
+              <div class="field">
+                <label for="payment">Uang pembayaran</label
+                ><input id="payment" type="number" min="0" value="50000" />
+              </div>
+              <button class="btn" type="submit">Perbarui struk</button>
+            </form>
+            <div id="receipt" class="receipt" aria-live="polite"></div>
+          </div>
+          <div class="card" style="margin-top: 20px">
+            <h2>Eksperimen kondisi</h2>
+            <p>
+              Coba isi uang pembayaran kurang dari subtotal. Simulasi akan
+              memberi tahu kekurangan, seperti validasi
+              <code class="inline-code">IF uangBayar &lt; totalBelanja</code>.
+            </p>
+          </div>
+          <div class="footer-nav">
+            <a class="btn secondary" href="code.html">← Source code</a
+            ><a class="btn" href="quiz.html">Uji pemahaman →</a>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

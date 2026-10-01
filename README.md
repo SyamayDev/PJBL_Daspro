@@ -54,7 +54,7 @@ Buka `media-interaktif/index.html` di browser. Untuk menerbitkan melalui GitHub 
 
 ## Media Interaktif
 
-Situs memuat Home, Masalah, Input Data, Proses, Algoritma, Flowchart, Source Code, Simulasi, Quiz, dan Kesimpulan. Penyaji berpindah seperti slideshow melalui tombol sebelumnya/berikutnya, tombol panah keyboard, atau menu materi di kontrol bawah. Kontrol juga menyediakan mode layar penuh.
+Situs memuat Home, Masalah, Input Data, Proses, Algoritma, Flowchart, Source Code, Simulasi, Quiz, dan Kesimpulan. Penyaji berpindah seperti slideshow melalui tombol sebelumnya/berikutnya, tombol panah keyboard, atau menu materi di kontrol bawah. Navigasi menampilkan indikator progres dan spinner aksesibel saat halaman sedang berpindah. Setiap slide memiliki judul, deskripsi SEO, dan favicon sendiri.
 
 Elemen pembelajaran dan interaksi:
 

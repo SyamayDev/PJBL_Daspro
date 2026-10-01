@@ -102,52 +102,41 @@ function buildSlideNavigation() {
           <span style="width: ${((currentIndex + 1) / pageLinks.length) * 100}%"></span>
         </div>
       </div>
-      <button class="slide-fullscreen" type="button" aria-label="Masuk layar penuh" title="Layar penuh">⛶</button>
       ${arrowLink(next, "next")}`;
 
   document.body.append(menu, controls);
 
   const toggle = controls.querySelector(".slide-menu-toggle");
-  const fullscreen = controls.querySelector(".slide-fullscreen");
   const close = menu.querySelector(".slide-menu-close");
-  const firstLink = menu.querySelector(".slide-menu-link");
+  const focusable = [
+    ...menu.querySelectorAll("a[href], button:not([disabled])"),
+  ];
+  const firstFocusable = focusable[0];
+  const lastFocusable = focusable[focusable.length - 1];
   const setMenuOpen = (open) => {
     menu.hidden = !open;
     toggle.setAttribute("aria-expanded", String(open));
+    document.querySelector(".main").inert = open;
+    controls.inert = open;
     if (open) close.focus();
     else toggle.focus();
   };
 
   toggle.addEventListener("click", () => setMenuOpen(menu.hidden));
-  fullscreen.addEventListener("click", async () => {
-    try {
-      if (document.fullscreenElement) await document.exitFullscreen();
-      else await document.documentElement.requestFullscreen();
-    } catch {
-      fullscreen.title = "Layar penuh tidak tersedia di browser ini";
-    }
-  });
-  document.addEventListener("fullscreenchange", () => {
-    const isFullscreen = Boolean(document.fullscreenElement);
-    fullscreen.setAttribute(
-      "aria-label",
-      isFullscreen ? "Keluar dari layar penuh" : "Masuk layar penuh",
-    );
-    fullscreen.title = isFullscreen ? "Keluar layar penuh" : "Layar penuh";
-  });
   close.addEventListener("click", () => setMenuOpen(false));
   menu.addEventListener("click", (event) => {
     if (event.target === menu) setMenuOpen(false);
   });
   menu.addEventListener("keydown", (event) => {
     if (event.key === "Escape") setMenuOpen(false);
-    if (
-      event.key === "Tab" &&
-      !event.shiftKey &&
-      document.activeElement === close
-    ) {
-      event.preventDefault();
-      firstLink.focus();
+    if (event.key === "Tab") {
+      if (event.shiftKey && document.activeElement === firstFocusable) {
+        event.preventDefault();
+        lastFocusable.focus();
+      } else if (!event.shiftKey && document.activeElement === lastFocusable) {
+        event.preventDefault();
+        firstFocusable.focus();
+      }
     }
   });
   document.addEventListener("keydown", (event) => {
@@ -158,10 +147,67 @@ function buildSlideNavigation() {
       )
     )
       return;
-    if (event.key === "ArrowLeft" && previous)
-      window.location.href = previous[0];
-    if (event.key === "ArrowRight" && next) window.location.href = next[0];
+    if (event.key === "ArrowLeft" && previous) navigateToSlide(previous[0]);
+    if (event.key === "ArrowRight" && next) navigateToSlide(next[0]);
   });
+}
+
+function navigateToSlide(href) {
+  document.dispatchEvent(new Event("page-transition-start"));
+  window.location.href = href;
+}
+
+function initPageLoader() {
+  const loader = document.createElement("div");
+  loader.className = "page-loader";
+  loader.hidden = true;
+  loader.setAttribute("role", "status");
+  loader.setAttribute("aria-live", "polite");
+  loader.setAttribute("aria-atomic", "true");
+  loader.innerHTML =
+    '<span class="page-loader-spinner" aria-hidden="true"></span><span>Memuat halaman...</span>';
+  document.body.appendChild(loader);
+
+  const showLoader = () => {
+    loader.hidden = false;
+    document.body.setAttribute("aria-busy", "true");
+  };
+  const hideLoader = () => {
+    loader.hidden = true;
+    document.body.removeAttribute("aria-busy");
+  };
+
+  document.addEventListener("page-transition-start", showLoader);
+  document.addEventListener(
+    "click",
+    (event) => {
+      const link = event.target.closest("a[href]");
+      if (
+        !link ||
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey ||
+        link.hasAttribute("download") ||
+        (link.target && link.target !== "_self")
+      )
+        return;
+
+      const destination = new URL(link.href, window.location.href);
+      if (
+        destination.origin !== window.location.origin ||
+        (destination.pathname === window.location.pathname &&
+          destination.search === window.location.search)
+      )
+        return;
+
+      showLoader();
+    },
+    true,
+  );
+  window.addEventListener("pageshow", hideLoader);
 }
 
 function initAccordions() {
@@ -444,6 +490,7 @@ function initOutputGuess() {
 
 document.addEventListener("DOMContentLoaded", () => {
   buildSlideNavigation();
+  initPageLoader();
   initAccordions();
   initTabs();
   initStepper();

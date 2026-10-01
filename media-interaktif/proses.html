@@ -43,18 +43,23 @@
               </p>
               <span class="formula"
                 >subtotalPesanan := hargaMenuDipilih * jumlah;<br />totalBelanja
-                := totalBelanja + subtotalPesanan;</span
+                := totalBelanja + subtotalPesanan;<br />totalItem := totalItem +
+                jumlah;</span
               >
             </article>
             <article class="tab-panel" data-panel="edit">
               <h2>Mengurangi pesanan</h2>
               <p>
                 Saat pelanggan mengurangi jumlah, program menghitung nilai yang
-                dikurangi lalu memperbarui subtotal dan total item.
+                dikurangi lalu memperbarui subtotal, total item, dan total
+                belanja. Jika jumlah menjadi nol, record dihapus dari array.
               </p>
               <span class="formula"
-                >subtotalKurang := harga * jumlahKurang;<br />totalBelanja :=
-                totalBelanja - subtotalKurang;</span
+                >subtotalKurang := pesanan[nomorEdit].harga * jumlahKurang;<br />totalBelanja
+                := totalBelanja - subtotalKurang;<br />totalItem := totalItem -
+                jumlahKurang;<br />pesanan[nomorEdit].jumlah :=
+                pesanan[nomorEdit].jumlah - jumlahKurang;<br />pesanan[nomorEdit].subtotal
+                := pesanan[nomorEdit].harga * pesanan[nomorEdit].jumlah;</span
               >
             </article>
             <article class="tab-panel" data-panel="bayar">

@@ -140,7 +140,27 @@ function initSimulation() {
   const customer = document.querySelector("#customer-name");
   const quantity = document.querySelector("#quantity");
   const payment = document.querySelector("#payment");
-  if (!form || !menu || !receipt) return;
+  const cartList = document.querySelector("#cart-list");
+  const addButton = document.querySelector("#add-item");
+  const finishButton = document.querySelector("#finish-order");
+  const orderActions = document.querySelector("#order-actions");
+  const paymentPanel = document.querySelector("#payment-panel");
+  const message = document.querySelector("#simulation-message");
+  if (
+    !form ||
+    !menu ||
+    !receipt ||
+    !customer ||
+    !quantity ||
+    !payment ||
+    !cartList ||
+    !addButton ||
+    !finishButton ||
+    !orderActions ||
+    !paymentPanel ||
+    !message
+  )
+    return;
 
   menu.innerHTML = menuItems
     .map(
@@ -148,20 +168,130 @@ function initSimulation() {
         `<option value="${index}">${index + 1}. ${name} - ${formatRupiah(price)}</option>`,
     )
     .join("");
-  const renderReceipt = () => {
-    const [name, price] = menuItems[Number(menu.value)];
-    const qty = Math.max(1, Number(quantity.value) || 1);
-    const total = price * qty;
-    const paid = Number(payment.value) || 0;
-    const change = paid >= total ? paid - total : null;
-    receipt.innerHTML = `<div class="receipt-title">WARUNG PAK DIN<br>SIMULASI STRUK</div>Pelangan : ${customer.value || "-"}\nMenu     : ${name}\nHarga    : ${formatRupiah(price)}\nJumlah   : ${qty}\nSubtotal: ${formatRupiah(total)}<div class="total-line"><span>Total</span><span>${formatRupiah(total)}</span></div><p class="muted">${paid ? (change === null ? `Uang kurang ${formatRupiah(total - paid)}` : `Kembalian ${formatRupiah(change)}`) : "Masukkan uang bayar untuk menghitung kembalian."}</p>`;
+
+  let orders = [];
+  let stage = "ordering";
+  let paidAmount = 0;
+  let change = 0;
+  let statusMessage = "";
+  const escapeHtml = (value) =>
+    value.replace(
+      /[&<>"']/g,
+      (character) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;",
+        })[character],
+    );
+
+  const render = () => {
+    const total = orders.reduce(
+      (sum, order) => sum + menuItems[order.menuIndex][1] * order.quantity,
+      0,
+    );
+    const totalItems = orders.reduce((sum, order) => sum + order.quantity, 0);
+
+    cartList.innerHTML = orders.length
+      ? orders
+          .map((order, index) => {
+            const [name, price] = menuItems[order.menuIndex];
+            return `<div class="cart-row"><span>${index + 1}. ${name} | ${formatRupiah(price)} x ${order.quantity}</span><strong>${formatRupiah(price * order.quantity)}</strong><button class="cart-remove" type="button" data-remove-order="${index}" aria-label="Kurangi satu ${name}" ${stage !== "ordering" ? "disabled" : ""}>−</button></div>`;
+          })
+          .join("")
+      : '<p class="muted">Belum ada pesanan.</p>';
+
+    form.querySelector(".order-entry").hidden = stage !== "ordering";
+    cartList.querySelectorAll("[data-remove-order]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const index = Number(button.dataset.removeOrder);
+        orders[index].quantity -= 1;
+        if (orders[index].quantity === 0) orders.splice(index, 1);
+        statusMessage = "Jumlah pesanan dikurangi satu.";
+        render();
+      });
+    });
+    finishButton.hidden = stage !== "ordering";
+    finishButton.disabled = orders.length === 0;
+    orderActions.hidden = stage !== "summary";
+    paymentPanel.hidden = stage !== "payment";
+    message.textContent = statusMessage;
+
+    const orderLines = orders
+      .map((order, index) => {
+        const [name, price] = menuItems[order.menuIndex];
+        return `${index + 1}. ${name} | ${formatRupiah(price)} x ${order.quantity} = ${formatRupiah(price * order.quantity)}`;
+      })
+      .join("<br>");
+    const paymentDetails =
+      stage === "paid"
+        ? `<p>Pembayaran: ${formatRupiah(paidAmount)}<br>Kembalian: ${formatRupiah(change)}</p><p class="receipt-status">Pembayaran berhasil. Terima kasih sudah berbelanja.</p>`
+        : stage === "payment"
+          ? `<p class="receipt-status">${statusMessage || "Masukkan uang pembayaran untuk melanjutkan."}</p>`
+          : stage === "summary"
+            ? '<p class="receipt-status">Periksa ringkasan, lalu lanjutkan pembayaran atau kembali mengubah pesanan.</p>'
+            : `<p class="receipt-status">${orders.length ? "Pesanan dapat ditambah atau dikurangi." : "Tambahkan menu untuk memulai pesanan."}</p>`;
+    receipt.innerHTML = `<div class="receipt-title">WARUNG PAK DIN<br>${stage === "paid" ? "STRUK PEMBAYARAN" : "RINGKASAN PESANAN"}</div><p>Pelanggan: ${escapeHtml(customer.value.trim()) || "-"}</p><div class="receipt-orders">${orderLines || "Belum ada pesanan."}</div><div class="receipt-meta">Jumlah jenis pesanan: ${orders.length}<br>Total item: ${totalItems}</div><div class="total-line"><span>Total belanja</span><span>${formatRupiah(total)}</span></div>${paymentDetails}`;
   };
-  form.addEventListener("input", renderReceipt);
+
+  addButton.addEventListener("click", () => {
+    const menuIndex = Number(menu.value);
+    const qty = Number(quantity.value);
+    if (!Number.isInteger(qty) || qty <= 0) {
+      statusMessage = "Jumlah pesanan harus lebih dari 0.";
+    } else if (orders.length >= 100) {
+      statusMessage = "Pesanan sudah mencapai batas maksimal 100 jenis.";
+    } else {
+      orders.push({ menuIndex, quantity: qty });
+      quantity.value = "1";
+      statusMessage = "Pesanan berhasil ditambahkan.";
+    }
+    render();
+  });
+
+  finishButton.addEventListener("click", () => {
+    if (orders.length === 0) return;
+    stage = "summary";
+    statusMessage = "";
+    render();
+  });
+  document.querySelector("#back-to-order").addEventListener("click", () => {
+    stage = "ordering";
+    statusMessage = "Pesanan dapat ditambah atau dikurangi.";
+    render();
+  });
+  document.querySelector("#start-payment").addEventListener("click", () => {
+    stage = "payment";
+    statusMessage = "";
+    render();
+    payment.focus();
+  });
+  document.querySelector("#submit-payment").addEventListener("click", () => {
+    const amount = Number(payment.value);
+    const total = orders.reduce(
+      (sum, order) => sum + menuItems[order.menuIndex][1] * order.quantity,
+      0,
+    );
+    if (!Number.isInteger(amount) || amount < 0) {
+      statusMessage =
+        "Masukkan nominal pembayaran berupa bilangan bulat positif.";
+    } else if (amount < total) {
+      statusMessage = `Uang kurang ${formatRupiah(total - amount)}. Masukkan pembayaran kembali.`;
+    } else {
+      paidAmount = amount;
+      change = amount - total;
+      stage = "paid";
+      statusMessage = "";
+    }
+    render();
+  });
+  customer.addEventListener("input", render);
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    renderReceipt();
   });
-  renderReceipt();
+  render();
 }
 
 function initQuiz() {
@@ -182,7 +312,22 @@ function initQuiz() {
     let correct = 0;
     questions.forEach((question) => {
       const selected = question.querySelector("input:checked");
-      if (selected?.value === question.dataset.answer) correct += 1;
+      const isCorrect = selected?.value === question.dataset.answer;
+      const correctOption = [...question.querySelectorAll("input")].find(
+        (option) => option.value === question.dataset.answer,
+      );
+      const correctAnswer = correctOption.closest("label").textContent.trim();
+      const feedback = question.querySelector(".question-feedback");
+      if (isCorrect) {
+        correct += 1;
+        feedback.textContent = "Benar.";
+      } else if (selected) {
+        feedback.textContent = `Belum tepat. Jawaban yang benar: ${correctAnswer}.`;
+      } else {
+        feedback.textContent = `Belum dijawab. Jawaban yang benar: ${correctAnswer}.`;
+      }
+      feedback.classList.toggle("is-correct", isCorrect);
+      feedback.classList.toggle("is-incorrect", !isCorrect);
     });
     const score = Math.round((correct / questions.length) * 100);
     scoreText.textContent = `${score}/100`;
@@ -197,6 +342,24 @@ function initQuiz() {
   });
 }
 
+function initOutputGuess() {
+  const form = document.querySelector("#output-guess-form");
+  const feedback = document.querySelector("#output-guess-feedback");
+  const question = form?.querySelector("[data-answer]");
+  if (!form || !feedback || !question) return;
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const selected = form.querySelector("input:checked");
+    const isCorrect = selected?.value === question.dataset.answer;
+    feedback.textContent = isCorrect
+      ? "Tepat. Subtotalnya Rp30.000 + Rp5.000 = Rp35.000, total item 3, dan kembaliannya Rp5.000."
+      : "Belum tepat. Hitung tiap subtotal, jumlahkan total item, lalu kurangi Rp40.000 dengan total belanja.";
+    feedback.classList.toggle("is-correct", isCorrect);
+    feedback.classList.toggle("is-incorrect", !isCorrect);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   buildNavigation();
   buildFloatingNavigation();
@@ -205,4 +368,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initStepper();
   initSimulation();
   initQuiz();
+  initOutputGuess();
 });

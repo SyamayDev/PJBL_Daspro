@@ -49,6 +49,30 @@
                   <td>Boleh berupa teks nama</td>
                 </tr>
                 <tr
+                  data-detail="pilihanUtama memilih mulai pesan, tentang program, atau keluar."
+                >
+                  <td><code class="inline-code">pilihanUtama</code></td>
+                  <td>integer</td>
+                  <td>Aksi menu utama</td>
+                  <td>1 sampai 3</td>
+                </tr>
+                <tr
+                  data-detail="pilihanTentang memilih kembali ke menu utama atau keluar dari program."
+                >
+                  <td><code class="inline-code">pilihanTentang</code></td>
+                  <td>integer</td>
+                  <td>Aksi tentang program</td>
+                  <td>1 atau 2</td>
+                </tr>
+                <tr
+                  data-detail="pilihanPesan memilih tambah, lihat, edit, selesai, atau pada ringkasan memilih bayar atau kembali."
+                >
+                  <td><code class="inline-code">pilihanPesan</code></td>
+                  <td>integer</td>
+                  <td>Aksi pengelolaan pesanan</td>
+                  <td>1 sampai 4; ringkasan 1 atau 2</td>
+                </tr>
+                <tr
                   data-detail="Nomor menu harus berada di antara 1 dan 30 sebelum CASE OF dijalankan."
                 >
                   <td><code class="inline-code">pilihanMenu</code></td>
@@ -63,6 +87,22 @@
                   <td>integer</td>
                   <td>Kuantitas menu</td>
                   <td>Lebih besar dari 0</td>
+                </tr>
+                <tr
+                  data-detail="nomorEdit harus menunjuk salah satu record pesanan yang sedang tersimpan."
+                >
+                  <td><code class="inline-code">nomorEdit</code></td>
+                  <td>integer</td>
+                  <td>Nomor pesanan yang diedit</td>
+                  <td>1 sampai jumlahPesanan</td>
+                </tr>
+                <tr
+                  data-detail="Jumlah yang dikurangi harus positif dan tidak boleh melebihi jumlah pesanan saat ini."
+                >
+                  <td><code class="inline-code">jumlahKurang</code></td>
+                  <td>integer</td>
+                  <td>Jumlah item yang dikurangi</td>
+                  <td>1 sampai jumlah saat ini</td>
                 </tr>
                 <tr
                   data-detail="Uang kurang memicu perulangan pembayaran sampai nilainya mencukupi total belanja."

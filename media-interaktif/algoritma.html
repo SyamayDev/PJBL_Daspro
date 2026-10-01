@@ -60,7 +60,8 @@
                 <h3>Kelola pesanan</h3>
                 <p>
                   Dalam <code class="inline-code">REPEAT UNTIL</code>, pengguna
-                  dapat menambah, melihat, atau mengedit pesanan.
+                  dapat menambah, melihat, atau mengurangi pesanan. Pesanan
+                  disimpan sebagai record di dalam array.
                 </p>
               </div>
             </article>
@@ -69,13 +70,24 @@
               <div>
                 <h3>Hitung dan simpan</h3>
                 <p>
-                  Harga dan jumlah diproses menjadi subtotal lalu disimpan dalam
-                  array of record.
+                  Harga dan jumlah setiap menu diproses menjadi subtotal. Total
+                  item dan total belanja diperbarui setiap kali ada perubahan.
                 </p>
               </div>
             </article>
             <article class="step">
               <span class="step-number">05</span>
+              <div>
+                <h3>Ringkasan dan konfirmasi</h3>
+                <p>
+                  Jika belum ada pesanan, program meminta pengguna menambahnya.
+                  Jika ada, ringkasan ditampilkan; pelanggan dapat kembali
+                  mengubah pesanan atau lanjut membayar.
+                </p>
+              </div>
+            </article>
+            <article class="step">
+              <span class="step-number">06</span>
               <div>
                 <h3>Validasi pembayaran</h3>
                 <p>
@@ -85,12 +97,12 @@
               </div>
             </article>
             <article class="step">
-              <span class="step-number">06</span>
+              <span class="step-number">07</span>
               <div>
                 <h3>Cetak output</h3>
                 <p>
-                  Program menampilkan struk berisi pesanan, total pembayaran,
-                  dan kembalian.
+                  Program menampilkan semua baris pesanan, total item, total
+                  belanja, pembayaran, dan kembalian.
                 </p>
               </div>
             </article>

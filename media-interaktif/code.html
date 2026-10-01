@@ -33,7 +33,8 @@
             <div class="tabs">
               <button class="tab-button active" data-tab="data">Data</button
               ><button class="tab-button" data-tab="menu">CASE OF</button
-              ><button class="tab-button" data-tab="bayar">Pembayaran</button>
+              ><button class="tab-button" data-tab="bayar">Pembayaran</button
+              ><button class="tab-button" data-tab="struk">Cetak struk</button>
             </div>
             <div class="tab-panel active" data-panel="data">
               <pre><code>type
@@ -62,22 +63,73 @@ var
   end;
 end;</code></pre>
               <p class="muted">
-                CASE OF memilih nama dan harga berdasarkan nomor menu.
+                Contoh beberapa cabang CASE OF memilih nama dan harga
+                berdasarkan nomor menu.
               </p>
             </div>
             <div class="tab-panel" data-panel="bayar">
-              <pre><code>repeat
+              <pre><code>pembayaranSelesai := false;
+repeat
   readln(uangBayar);
   if uangBayar &lt; totalBelanja then
-    writeln('UANG TIDAK MENCUKUPI')
+  begin
+    writeln('UANG TIDAK MENCUKUPI');
+  end
   else
+  begin
     kembalian := uangBayar - totalBelanja;
-until uangBayar &gt;= totalBelanja;</code></pre>
+    pembayaranSelesai := true;
+  end;
+until pembayaranSelesai = true;</code></pre>
               <p class="muted">
                 REPEAT UNTIL menjamin pembayaran valid sebelum struk dicetak.
               </p>
             </div>
+            <div class="tab-panel" data-panel="struk">
+              <pre><code>for i := 1 to jumlahPesanan do
+begin
+  writeln(i:2, '  ',
+    pesanan[i].namaMenu:28,
+    pesanan[i].jumlah:4,
+    '      Rp', pesanan[i].subtotal:8);
+end;</code></pre>
+              <p class="muted">
+                FOR menelusuri setiap record agar seluruh menu tampil pada
+                ringkasan dan struk.
+              </p>
+            </div>
           </div>
+          <section class="card output-guess" aria-labelledby="guess-heading">
+            <h2 id="guess-heading">Tebak output program</h2>
+            <p>
+              Pelanggan memesan 2 Nasi Goreng (Rp15.000 per porsi) dan 1 Es Teh
+              (Rp5.000), lalu membayar Rp40.000. Berapa total belanja, total
+              item, dan kembalian?
+            </p>
+            <form id="output-guess-form">
+              <fieldset class="question" data-answer="a">
+                <legend>Pilih hasil yang sesuai dengan program Pascal.</legend>
+                <label class="option">
+                  <input type="radio" name="output-guess" value="a" required />
+                  Total Rp35.000, 3 item, kembalian Rp5.000
+                </label>
+                <label class="option">
+                  <input type="radio" name="output-guess" value="b" />
+                  Total Rp40.000, 3 item, kembalian Rp0
+                </label>
+                <label class="option">
+                  <input type="radio" name="output-guess" value="c" />
+                  Total Rp35.000, 2 item, kembalian Rp5.000
+                </label>
+              </fieldset>
+              <button class="btn" type="submit">Periksa tebakan</button>
+              <p
+                id="output-guess-feedback"
+                class="answer-feedback"
+                aria-live="polite"
+              ></p>
+            </form>
+          </section>
           <div class="card">
             <h2>Konsep yang tampak</h2>
             <div class="kicker-row">
@@ -92,6 +144,9 @@ until uangBayar &gt;= totalBelanja;</code></pre>
               atas dipilih agar hubungan antara konsep dan perilaku program
               mudah dipresentasikan.
             </p>
+            <a class="btn secondary" href="../project.pas" download
+              >Unduh source code Pascal</a
+            >
           </div>
           <div class="footer-nav">
             <a class="btn secondary" href="flowchart.html">← Flowchart</a

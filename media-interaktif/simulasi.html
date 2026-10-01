@@ -25,8 +25,8 @@
             <p class="eyebrow">08 / Simulasi</p>
             <h1>Jalankan satu transaksi di browser.</h1>
             <p class="lead">
-              Ubah input di kiri dan lihat struk berubah real-time. Logikanya
-              mengikuti subtotal dan kembalian pada program Pascal.
+              Tambahkan beberapa menu, tinjau ringkasan, lalu selesaikan
+              pembayaran seperti alur program Pascal.
             </p>
           </header>
           <div class="sim-grid">
@@ -35,28 +35,58 @@
                 <label for="customer-name">Nama pelanggan</label
                 ><input id="customer-name" value="Sinta" required />
               </div>
-              <div class="field">
-                <label for="menu-select">Menu</label
-                ><select id="menu-select"></select>
+              <div class="order-entry">
+                <div class="field">
+                  <label for="menu-select">Pilih menu</label
+                  ><select id="menu-select"></select>
+                </div>
+                <div class="field">
+                  <label for="quantity">Jumlah</label
+                  ><input id="quantity" type="number" min="1" value="1" />
+                </div>
+                <button class="btn" id="add-item" type="button">
+                  Tambah pesanan
+                </button>
               </div>
-              <div class="field">
-                <label for="quantity">Jumlah</label
-                ><input id="quantity" type="number" min="1" value="2" />
+              <section class="cart-section" aria-labelledby="cart-heading">
+                <h2 id="cart-heading">Pesanan sementara</h2>
+                <div id="cart-list" class="cart-list"></div>
+              </section>
+              <p
+                id="simulation-message"
+                class="simulation-message"
+                aria-live="polite"
+              ></p>
+              <button class="btn" id="finish-order" type="button" disabled>
+                Selesai memesan
+              </button>
+              <div id="order-actions" class="simulation-actions" hidden>
+                <button class="btn secondary" id="back-to-order" type="button">
+                  Kembali ke pesanan
+                </button>
+                <button class="btn" id="start-payment" type="button">
+                  Lanjut pembayaran
+                </button>
               </div>
-              <div class="field">
-                <label for="payment">Uang pembayaran</label
-                ><input id="payment" type="number" min="0" value="50000" />
+              <div id="payment-panel" hidden>
+                <div class="field">
+                  <label for="payment">Uang pembayaran</label
+                  ><input id="payment" type="number" min="0" step="1" />
+                </div>
+                <button class="btn" id="submit-payment" type="button">
+                  Proses pembayaran
+                </button>
               </div>
-              <button class="btn" type="submit">Perbarui struk</button>
             </form>
             <div id="receipt" class="receipt" aria-live="polite"></div>
           </div>
           <div class="card" style="margin-top: 20px">
-            <h2>Eksperimen kondisi</h2>
+            <h2>Alur transaksi</h2>
             <p>
-              Coba isi uang pembayaran kurang dari subtotal. Simulasi akan
-              memberi tahu kekurangan, seperti validasi
-              <code class="inline-code">IF uangBayar &lt; totalBelanja</code>.
+              Pesanan dapat ditambah atau dikurangi sebelum pembayaran. Jika
+              uang kurang dari total belanja, masukkan nominal baru untuk
+              mengulang validasi seperti
+              <code class="inline-code">REPEAT UNTIL</code>.
             </p>
           </div>
           <div class="footer-nav">

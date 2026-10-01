@@ -1,14 +1,103 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1350">
-<defs><style>text{font-family:Arial,sans-serif;fill:#0f172a;font-weight:700}.small{font-size:22px}.node{stroke-width:4}.arrow{stroke:#2563eb;stroke-width:5;fill:none;marker-end:url(#m)}</style><marker id="m" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#2563eb"/></marker></defs>
-<rect width="900" height="1350" fill="#fff"/><text x="450" y="55" text-anchor="middle" font-size="32">FLOWCHART WARUNG PAK DIN</text>
-<rect class="node" x="280" y="95" width="340" height="70" rx="35" fill="#dbeafe" stroke="#2563eb"/><text x="450" y="139" text-anchor="middle" font-size="25">Mulai</text>
-<path class="arrow" d="M450 165 V220"/><path class="arrow" d="M450 320 V375"/><path class="arrow" d="M450 475 V530"/><path class="arrow" d="M450 630 V685"/><path class="arrow" d="M450 785 V840"/><path class="arrow" d="M450 940 V995"/><path class="arrow" d="M450 1095 V1150"/>
-<polygon class="node" points="250,220 650,220 590,320 310,320" fill="#e0f2fe" stroke="#0284c7"/><text x="450" y="278" text-anchor="middle" font-size="23">Input nama, menu, jumlah</text>
-<rect class="node" x="220" y="375" width="460" height="100" rx="12" fill="#fef3c7" stroke="#d97706"/><text x="450" y="418" text-anchor="middle" font-size="23">Hitung subtotal</text><text x="450" y="451" text-anchor="middle" class="small">harga x jumlah</text>
-<polygon class="node" points="450,530 610,605 450,680 290,605" fill="#fee2e2" stroke="#dc2626"/><text x="450" y="612" text-anchor="middle" font-size="23">Tambah atau edit?</text>
-<rect class="node" x="220" y="685" width="460" height="100" rx="12" fill="#fef3c7" stroke="#d97706"/><text x="450" y="728" text-anchor="middle" font-size="23">Perbarui total belanja</text><text x="450" y="761" text-anchor="middle" class="small">total +/− subtotal</text>
-<polygon class="node" points="450,840 610,915 450,990 290,915" fill="#fee2e2" stroke="#dc2626"/><text x="450" y="922" text-anchor="middle" font-size="23">Uang cukup?</text>
-<rect class="node" x="220" y="995" width="460" height="100" rx="12" fill="#dcfce7" stroke="#059669"/><text x="450" y="1038" text-anchor="middle" font-size="23">Hitung kembalian</text><text x="450" y="1071" text-anchor="middle" class="small">uang bayar − total</text>
-<rect class="node" x="280" y="1150" width="340" height="70" rx="35" fill="#dbeafe" stroke="#2563eb"/><text x="450" y="1194" text-anchor="middle" font-size="25">Cetak struk dan selesai</text>
-<path d="M610 915 H790 V605 H615" class="arrow"/><text x="760" y="750" class="small" text-anchor="middle">Tidak: bayar lagi</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 1930" role="img" aria-labelledby="title desc">
+  <title id="title">Flowchart sistem pemesanan Warung Pak Din</title>
+  <desc id="desc">Alur pemesanan beberapa menu, ringkasan, pembayaran berulang sampai cukup, dan pencetakan struk.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#475569" /></marker>
+    <style>
+      text{font-family:Arial,sans-serif;fill:#172033}.title{font-size:30px;font-weight:700}.label{font-size:17px;font-weight:700}.detail{font-size:14px}.branch{font-size:14px;font-weight:700;fill:#475569}.line{fill:none;stroke:#475569;stroke-width:2.5;marker-end:url(#arrow)}.loop{fill:none;stroke:#64748b;stroke-width:2;marker-end:url(#arrow)}.input{fill:#e0f2fe;stroke:#0284c7}.process{fill:#ecfdf5;stroke:#059669}.decision{fill:#fef3c7;stroke:#d97706}.warn{fill:#fff7ed;stroke:#ea580c}.terminal{fill:#dbeafe;stroke:#2563eb}.node{stroke-width:2.5}
+    </style>
+  </defs>
+  <rect width="1000" height="1870" fill="#fff" />
+  <text class="title" x="560" y="46" text-anchor="middle">FLOWCHART PEMESANAN WARUNG PAK DIN</text>
+
+  <rect class="node terminal" x="410" y="75" width="180" height="56" rx="28" />
+  <text class="label" x="500" y="110" text-anchor="middle">Mulai pesanan</text>
+  <path class="line" d="M500 131v35" />
+  <rect class="node input" x="340" y="166" width="320" height="88" rx="10" />
+  <text class="label" x="500" y="195" text-anchor="middle">Inisialisasi transaksi</text>
+  <text class="detail" x="500" y="220" text-anchor="middle">jumlahPesanan, totalItem, totalBelanja = 0</text>
+  <path class="line" d="M500 254v34" />
+  <path class="node input" d="M365 288h270l-20 62H385Z" />
+  <text class="label" x="500" y="326" text-anchor="middle">Input namaPelanggan</text>
+  <path class="line" d="M500 350v35" />
+  <rect class="node input" x="300" y="385" width="400" height="78" rx="10" />
+  <text class="label" x="500" y="416" text-anchor="middle">Menu kelola pesanan</text>
+  <text class="detail" x="500" y="442" text-anchor="middle">1 Tambah  |  2 Lihat  |  3 Edit  |  4 Selesai</text>
+  <path class="line" d="M500 463v28" />
+  <path class="node decision" d="m500 491 105 68-105 68-105-68Z" />
+  <text class="label" x="500" y="565" text-anchor="middle">pilihanPesan?</text>
+
+  <path class="line" d="M408 559H195v88" />
+  <text class="branch" x="274" y="548" text-anchor="middle">1</text>
+  <path class="line" d="M500 627v20" />
+  <text class="branch" x="515" y="642">2</text>
+  <path class="line" d="M592 559h213v88" />
+  <text class="branch" x="714" y="548" text-anchor="middle">3</text>
+  <text class="branch" x="750" y="570" text-anchor="middle">4</text>
+  <path class="line" d="M195 647v12" />
+  <rect class="node process" x="45" y="659" width="300" height="132" rx="10" />
+  <text class="label" x="195" y="688" text-anchor="middle">Tambah pesanan</text>
+  <text class="detail" x="195" y="714" text-anchor="middle">Validasi batas 100, menu 1-30,</text>
+  <text class="detail" x="195" y="737" text-anchor="middle">dan jumlah &gt; 0</text>
+  <text class="detail" x="195" y="760" text-anchor="middle">Hitung subtotal, simpan ke array,</text>
+  <text class="detail" x="195" y="779" text-anchor="middle">perbarui total belanja/item</text>
+  <path class="line" d="M500 647v12" />
+  <rect class="node process" x="370" y="659" width="260" height="94" rx="10" />
+  <text class="label" x="500" y="691" text-anchor="middle">Lihat pesanan</text>
+  <text class="detail" x="500" y="718" text-anchor="middle">Tampilkan daftar dan total</text>
+  <path class="line" d="M805 647v12" />
+  <rect class="node process" x="655" y="659" width="300" height="132" rx="10" />
+  <text class="label" x="805" y="688" text-anchor="middle">Edit pesanan</text>
+  <text class="detail" x="805" y="714" text-anchor="middle">Validasi nomor dan jumlah</text>
+  <text class="detail" x="805" y="737" text-anchor="middle">Kurangi jumlah, hitung ulang subtotal</text>
+  <text class="detail" x="805" y="760" text-anchor="middle">Hapus baris jika jumlah menjadi 0</text>
+  <path class="loop" d="M195 791v54H18V424h282" />
+  <path class="loop" d="M500 753v57h630V424H700" />
+  <path class="loop" d="M805 791v19h325" />
+  <text class="branch" x="900" y="824" text-anchor="middle">4. Selesai</text>
+  <path class="line" d="M605 580H1100v310H990" />
+  <text class="branch" x="920" y="548" text-anchor="middle">Periksa pesanan</text>
+  <path class="node decision" d="m890 825 100 65-100 65-100-65Z" />
+  <text class="label" x="890" y="895" text-anchor="middle">jumlahPesanan = 0?</text>
+  <path class="line" d="M890 955v24" />
+  <text class="branch" x="905" y="974">YA</text>
+  <rect class="node warn" x="785" y="979" width="210" height="76" rx="10" />
+  <text class="label" x="890" y="1009" text-anchor="middle">Belum ada pesanan</text>
+  <text class="detail" x="890" y="1034" text-anchor="middle">Kembali ke menu kelola</text>
+  <path class="loop" d="M995 1017h135V424H700" />
+  <path class="line" d="M790 890H650v105" />
+  <text class="branch" x="745" y="877">TIDAK</text>
+
+  <rect class="node input" x="330" y="995" width="340" height="84" rx="10" />
+  <text class="label" x="500" y="1027" text-anchor="middle">Ringkasan pesanan</text>
+  <text class="detail" x="500" y="1053" text-anchor="middle">Semua baris, total item, total belanja</text>
+  <path class="line" d="M500 1079v27" />
+  <path class="node decision" d="m500 1106 110 65-110 65-110-65Z" />
+  <text class="label" x="500" y="1166" text-anchor="middle">Lanjut bayar?</text>
+  <text class="detail" x="500" y="1188" text-anchor="middle">1 Ya / 2 Kembali</text>
+  <path class="loop" d="M390 1171H18V424h282" />
+  <text class="branch" x="206" y="1159">2. Kembali</text>
+  <path class="line" d="M500 1236v34" />
+  <text class="branch" x="515" y="1259">1. Ya</text>
+  <path class="node input" d="M380 1270h240l-20 62H400Z" />
+  <text class="label" x="500" y="1308" text-anchor="middle">Input uangBayar</text>
+  <path class="line" d="M500 1332v29" />
+  <path class="node decision" d="m500 1361 120 72-120 72-120-72Z" />
+  <text class="label" x="500" y="1429" text-anchor="middle">Uang cukup?</text>
+  <text class="detail" x="500" y="1452" text-anchor="middle">uangBayar &gt;= totalBelanja</text>
+  <path class="loop" d="M380 1433H265v-132h115" />
+  <text class="branch" x="285" y="1419">TIDAK</text>
+  <path class="line" d="M500 1505v34" />
+  <text class="branch" x="515" y="1529">YA</text>
+  <rect class="node process" x="345" y="1539" width="310" height="76" rx="10" />
+  <text class="label" x="500" y="1570" text-anchor="middle">Hitung kembalian</text>
+  <text class="detail" x="500" y="1595" text-anchor="middle">uangBayar - totalBelanja</text>
+  <path class="line" d="M500 1615v32" />
+  <path class="node input" d="M330 1647h340l-20 94H350Z" />
+  <text class="label" x="500" y="1685" text-anchor="middle">Cetak struk</text>
+  <text class="detail" x="500" y="1710" text-anchor="middle">Daftar pesanan, jumlah, total, pembayaran,</text>
+  <text class="detail" x="500" y="1730" text-anchor="middle">dan kembalian</text>
+  <path class="line" d="M500 1741v35" />
+  <rect class="node terminal" x="390" y="1776" width="220" height="60" rx="30" />
+  <text class="label" x="500" y="1813" text-anchor="middle">Kembali ke menu utama</text>
 </svg>

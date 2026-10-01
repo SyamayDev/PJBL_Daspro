@@ -1,57 +1,55 @@
-{ Program kasir Warung Pak Din untuk mencatat beberapa jenis menu dalam satu transaksi. }
 program WarungPakDin;
 
 uses
-    crt; { Menyediakan clrscr untuk membersihkan layar terminal. }
+    crt; 
 
 const
-    MAX_PESANAN = 100; { Batas maksimum jenis pesanan yang dapat disimpan. }
+    MAX_PESANAN = 100; 
 
 type
-    { Satu record berisi seluruh data untuk satu jenis menu yang dipesan. }
+    
     TPesanan = record
-        namaMenu : string[40]; { Nama makanan atau minuman. }
-        harga    : longint;    { Harga satu item menu. }
-        jumlah   : integer;    { Banyak item untuk menu ini. }
-        subtotal : longint;    { harga dikalikan jumlah. }
+        namaMenu : string[40]; 
+        harga    : longint;    
+        jumlah   : integer;    
+        subtotal : longint;    
     end;
 
 var
-    pesanan : array[1..MAX_PESANAN] of TPesanan; { Daftar record pesanan. }
+    pesanan : array[1..MAX_PESANAN] of TPesanan; 
 
-    { Ringkasan transaksi dihitung ulang saat pesanan berubah. }
+    
     jumlahPesanan : integer;
     totalItem     : integer;
     totalBelanja  : longint;
 
-    { Variabel untuk membaca pilihan menu utama dan menu pengelolaan pesanan. }
+    
     pilihanUtama  : integer;
     pilihanPesan  : integer;
     pilihanMenu   : integer;
     jumlah        : integer;
 
-    { Menyimpan hasil pencarian harga dan perhitungan satu pesanan baru. }
+    
     namaMenuDipilih : string[40];
     hargaMenuDipilih : longint;
     subtotalPesanan : longint;
 
-    { Data pelanggan dan hasil pembayaran transaksi. }
+    
     namaPelanggan : string[50];
     uangBayar : longint;
     kembalian : longint;
 
-    { Indeks loop untuk menampilkan atau merapatkan elemen array. }
+    
     i : integer;
 
 
-{ ========================================================= }
-{                  PROSEDUR MENU UTAMA                     }
-{ ========================================================= }
 
-{ Menampilkan tiga pilihan utama dan menyimpan pilihan pengguna. }
+
+
+
 procedure TampilkanMenuUtama;
 begin
-    clrscr; { Mulai tampilan menu dari layar yang bersih. }
+    clrscr; 
 
     writeln('==============================================');
     writeln('              WARUNG PAK DIN                 ');
@@ -68,20 +66,19 @@ begin
 end;
 
 
-{ ========================================================= }
-{                     DAFTAR MENU                          }
-{ ========================================================= }
 
-{ Menampilkan katalog bernomor yang dipakai saat menambah pesanan. }
+
+
+
 procedure TampilkanDaftarMenu;
 begin
-    clrscr; { Hapus tampilan sebelumnya sebelum menampilkan katalog menu. }
+    clrscr; 
 
     writeln('==============================================================');
     writeln('                  MENU WARUNG PAK DIN                        ');
     writeln('==============================================================');
     writeln;
-    { Nomor katalog harus sama dengan nomor CASE pada TentukanMenu. }
+    
     writeln(' 1. Nasi Goreng          Rp15.000');
     writeln(' 2. Nasi Goreng Ayam     Rp20.000');
     writeln(' 3. Nasi Goreng Seafood  Rp25.000');
@@ -118,21 +115,20 @@ begin
 end;
 
 
-{ ========================================================= }
-{               MENENTUKAN MENU DENGAN CASE OF             }
-{ ========================================================= }
 
-{ Mengubah nomor katalog menjadi nama dan harga menu. }
+
+
+
 procedure TentukanMenu(nomor : integer);
 begin
-    { Set nilai awal agar pilihan tak dikenal tidak mewarisi data menu lain. }
+    
     namaMenuDipilih := '';
     hargaMenuDipilih := 0;
 
-    { CASE OF memasangkan nomor menu dengan nama dan harga yang tetap. }
+    
     case nomor of
 
-        { Menu makanan utama menggunakan harga tetap dalam rupiah. }
+        
         1:
         begin
             namaMenuDipilih := 'Nasi Goreng';
@@ -253,7 +249,7 @@ begin
             hargaMenuDipilih := 20000;
         end;
 
-        { Menu minuman melanjutkan nomor katalog makanan. }
+        
         21:
         begin
             namaMenuDipilih := 'Es Teh';
@@ -318,20 +314,19 @@ begin
 end;
 
 
-{ ========================================================= }
-{                  LIHAT PESANAN                            }
-{ ========================================================= }
 
-{ Menampilkan seluruh record pesanan dan ringkasan nilainya. }
+
+
+
 procedure TampilkanPesanan;
 begin
-    clrscr; { Tampilkan daftar sementara pada layar tersendiri. }
+    clrscr; 
 
     writeln('==============================================================');
     writeln('                    PESANAN SEMENTARA                        ');
     writeln('==============================================================');
 
-    { Hindari loop FOR dengan batas 1..0 bila keranjang masih kosong. }
+    
     if jumlahPesanan = 0 then
     begin
         writeln;
@@ -343,7 +338,7 @@ begin
         writeln('No  Menu                         Qty       Subtotal');
         writeln('--------------------------------------------------------------');
 
-        { Cetak setiap record sesuai urutannya dalam array. }
+        
         for i := 1 to jumlahPesanan do
         begin
             writeln(i:2, '  ',
@@ -365,14 +360,13 @@ begin
 end;
 
 
-{ ========================================================= }
-{                  TAMBAH PESANAN                           }
-{ ========================================================= }
 
-{ Memvalidasi satu menu baru, menyimpannya ke array, dan memperbarui total. }
+
+
+
 procedure TambahPesanan;
 begin
-    { Cegah akses ke luar batas array sebelum meminta input. }
+    
     if jumlahPesanan >= MAX_PESANAN then
     begin
         writeln('Pesanan sudah mencapai batas maksimal.');
@@ -383,12 +377,12 @@ begin
         TampilkanDaftarMenu;
 
         writeln;
-        { Baca nomor katalog, bukan nomor baris di daftar pesanan sementara. }
+        
         write('Pilih nomor menu [1-30] : ');
         readln(pilihanMenu);
 
-        { Validasi menggunakan IF ELSE }
-        { Pastikan nomor menu memiliki pasangan pada CASE OF. }
+        
+        
         if (pilihanMenu < 1) or (pilihanMenu > 30) then
         begin
             writeln;
@@ -408,8 +402,8 @@ begin
             write('Jumlah pesanan : ');
             readln(jumlah);
 
-            { Validasi jumlah }
-            { Jumlah nol atau negatif tidak boleh menjadi record transaksi. }
+            
+            
             if jumlah <= 0 then
             begin
                 writeln;
@@ -418,19 +412,19 @@ begin
             end
             else
             begin
-                { Hitung subtotal lalu gunakan slot array berikutnya. }
+                
                 subtotalPesanan := hargaMenuDipilih * jumlah;
 
-                { Tambahkan satu jenis pesanan ke slot kosong berikutnya. }
+                
                 jumlahPesanan := jumlahPesanan + 1;
 
-                { Simpan empat atribut pesanan sebagai satu record array. }
+                
                 pesanan[jumlahPesanan].namaMenu := namaMenuDipilih;
                 pesanan[jumlahPesanan].harga := hargaMenuDipilih;
                 pesanan[jumlahPesanan].jumlah := jumlah;
                 pesanan[jumlahPesanan].subtotal := subtotalPesanan;
 
-                { Sinkronkan ringkasan total setelah record berhasil disimpan. }
+                
                 totalBelanja := totalBelanja + subtotalPesanan;
                 totalItem := totalItem + jumlah;
 
@@ -451,18 +445,17 @@ begin
     end;
 end;
 
-{ ========================================================= }
-{                  EDIT PESANAN                            }
-{ ========================================================= }
 
-{ Mengurangi kuantitas pada satu record dan menghapusnya bila jumlahnya nol. }
+
+
+
 procedure EditPesanan;
 var
     nomorEdit : integer;
     jumlahKurang : integer;
     subtotalKurang : longint;
 begin
-    clrscr; { Tampilkan proses pengurangan pesanan secara terpisah. }
+    clrscr; 
 
     writeln('==============================================================');
     writeln('                     EDIT PESANAN                            ');
@@ -493,12 +486,12 @@ begin
         writeln('--------------------------------------------------------------');
         writeln;
 
-            { Nomor ini memilih record yang sudah ada di keranjang. }
+            
             write('Masukkan nomor pesanan yang ingin diedit : ');
         readln(nomorEdit);
 
-        { Validasi nomor pesanan }
-        { Nomor edit mengacu ke posisi record, bukan nomor katalog menu. }
+        
+        
         if (nomorEdit < 1) or (nomorEdit > jumlahPesanan) then
         begin
             writeln;
@@ -516,8 +509,8 @@ begin
             write('Jumlah yang ingin dikurangi : ');
             readln(jumlahKurang);
 
-            { Validasi jumlah yang dikurangi }
-            { Pengurangan harus positif dan tidak boleh melebihi jumlah saat ini. }
+            
+            
             if jumlahKurang <= 0 then
             begin
                 writeln;
@@ -535,13 +528,13 @@ begin
             end
             else
             begin
-                { Hitung subtotal yang dikurangi }
-                { Hitung nilai yang dikurangi sebelum memperbarui data record. }
+                
+                
                 subtotalKurang :=
                     pesanan[nomorEdit].harga * jumlahKurang;
 
-                { Kurangi jumlah dan subtotal }
-                { Perbarui kuantitas dan subtotal pada record yang sama. }
+                
+                
                 pesanan[nomorEdit].jumlah :=
                     pesanan[nomorEdit].jumlah - jumlahKurang;
 
@@ -549,8 +542,8 @@ begin
                     pesanan[nomorEdit].harga *
                     pesanan[nomorEdit].jumlah;
 
-                { Update total keseluruhan }
-                { Perbarui jumlah keseluruhan item dan nilai transaksi. }
+                
+                
                 totalItem := totalItem - jumlahKurang;
                 totalBelanja := totalBelanja - subtotalKurang;
 
@@ -566,16 +559,16 @@ begin
                 writeln('==============================================');
                 writeln;
 
-                { Jika jumlah menjadi 0, hapus jenis pesanan }
+                
                 if pesanan[nomorEdit].jumlah = 0 then
                 begin
-                    { Geser record setelahnya agar tidak ada celah di tengah array. }
+                    
                     for i := nomorEdit to jumlahPesanan - 1 do
                     begin
                         pesanan[i] := pesanan[i + 1];
                     end;
 
-                    { Keluarkan record kosong dan rapatkan nomor baris. }
+                    
                     jumlahPesanan := jumlahPesanan - 1;
 
                     writeln('Jumlah pesanan menjadi 0.');
@@ -590,22 +583,21 @@ begin
     end;
 end;
 
-{ ========================================================= }
-{                 BATALKAN SATU PESANAN                    }
-{ ========================================================= }
 
-{ Menghapus seluruh kuantitas satu record dan menyinkronkan ringkasan transaksi. }
+
+
+
 procedure BatalkanPesanan;
 var
     nomorBatal : integer;
 begin
-    clrscr; { Tampilkan daftar yang dapat dibatalkan. }
+    clrscr; 
 
     writeln('==============================================================');
     writeln('                    BATALKAN PESANAN                         ');
     writeln('==============================================================');
 
-    { Tidak ada nomor yang valid untuk dipilih jika daftar kosong. }
+    
     if jumlahPesanan = 0 then
     begin
         writeln;
@@ -615,7 +607,7 @@ begin
     end
     else
     begin
-        { Tampilkan nomor record agar pengguna memilih baris yang tepat. }
+        
         writeln;
         writeln('No  Menu                         Qty       Subtotal');
         writeln('--------------------------------------------------------------');
@@ -631,7 +623,7 @@ begin
         write('Masukkan nomor pesanan yang dibatalkan : ');
         readln(nomorBatal);
 
-        { Validasi nomor sebelum membaca atau mengubah array. }
+        
         if (nomorBatal < 1) or (nomorBatal > jumlahPesanan) then
         begin
             writeln;
@@ -640,23 +632,23 @@ begin
         end
         else
         begin
-            { Kurangi kedua total menggunakan nilai record yang akan dihapus. }
-            { Pembatalan menghapus seluruh kuantitas pada satu jenis menu. }
+            
+            
             totalItem := totalItem - pesanan[nomorBatal].jumlah;
             totalBelanja := totalBelanja - pesanan[nomorBatal].subtotal;
 
             writeln;
             writeln('Pesanan ', pesanan[nomorBatal].namaMenu, ' dibatalkan.');
 
-            { Rapatkan array dengan menyalin record di kanan satu posisi ke kiri. }
-            { Salin satu per satu record setelah baris batal ke kiri. }
+            
+            
             for i := nomorBatal to jumlahPesanan - 1 do
             begin
                 pesanan[i] := pesanan[i + 1];
             end;
 
-            { Jumlah jenis berkurang satu; slot terakhir tidak lagi digunakan. }
-            { Slot terakhir tidak lagi termasuk bagian array yang terpakai. }
+            
+            
             jumlahPesanan := jumlahPesanan - 1;
 
             writeln('Jumlah jenis pesanan : ', jumlahPesanan);
@@ -671,17 +663,16 @@ begin
 end;
 
 
-{ ========================================================= }
-{                  TENTANG PROGRAM                          }
-{ ========================================================= }
 
-{ Menjelaskan konsep program dan memberi pilihan kembali atau keluar. }
+
+
+
 procedure TentangProgram;
 var
     pilihanTentang : integer;
     selesaiTentang : boolean;
 begin
-    { Halaman tentang berulang sampai pengguna kembali atau menghentikan program. }
+    
     selesaiTentang := false;
 
     repeat
@@ -733,16 +724,15 @@ begin
 end;
 
 
-{ ========================================================= }
-{                  PEMBAYARAN                              }
-{ ========================================================= }
 
-{ Meminta pembayaran berulang sampai total belanja terpenuhi. }
+
+
+
 procedure Pembayaran;
 var
     pembayaranSelesai : boolean;
 begin
-    pembayaranSelesai := false; { Pembayaran belum valid sebelum percobaan pertama. }
+    pembayaranSelesai := false; 
 
     repeat
         clrscr;
@@ -754,11 +744,11 @@ begin
         writeln('Total Belanja : Rp', totalBelanja);
         writeln;
 
-        { Nominal diminta lagi jika belum menutup total belanja. }
+        
         write('Masukkan uang pembayaran : Rp');
         readln(uangBayar);
 
-        { Ulangi input saat pembayaran belum menutup total belanja. }
+        
         if uangBayar < totalBelanja then
         begin
             writeln;
@@ -777,7 +767,7 @@ begin
         end
         else
         begin
-            { Simpan selisih sebagai kembalian dan akhiri loop pembayaran. }
+            
             kembalian := uangBayar - totalBelanja;
             pembayaranSelesai := true;
         end;
@@ -786,14 +776,13 @@ begin
 end;
 
 
-{ ========================================================= }
-{                  CETAK STRUK                              }
-{ ========================================================= }
 
-{ Mencetak semua record tersisa beserta pembayaran dan kembalian. }
+
+
+
 procedure CetakStruk;
 begin
-    clrscr; { Bersihkan layar sebelum mencetak hasil akhir transaksi. }
+    clrscr; 
 
     writeln('==============================================================');
     writeln('                       WARUNG PAK DIN                        ');
@@ -806,7 +795,7 @@ begin
     writeln('No  Menu                         Qty       Subtotal');
     writeln('--------------------------------------------------------------');
 
-    { Cetak seluruh jenis pesanan yang masih tersimpan setelah edit/pembatalan. }
+    
     for i := 1 to jumlahPesanan do
     begin
         writeln(i:2, '  ',
@@ -816,7 +805,7 @@ begin
     end;
 
     writeln('--------------------------------------------------------------');
-    { Tampilkan ringkasan transaksi setelah seluruh baris pesanan. }
+    
     writeln('Total Jenis Pesanan : ', jumlahPesanan);
     writeln('Total Item          : ', totalItem);
     writeln('Total Belanja       : Rp', totalBelanja);
@@ -834,11 +823,10 @@ begin
 end;
 
 
-{ ========================================================= }
-{                  PROSES PEMESANAN                         }
-{ ========================================================= }
 
-{ Mengelola seluruh transaksi tanpa mengulang input nama saat kembali ke keranjang. }
+
+
+
 procedure MulaiPesanan;
 var
     selesaiPesanan : boolean;
@@ -846,7 +834,7 @@ var
 begin
     clrscr;
 
-    { Setiap transaksi baru dimulai dengan array dan ringkasan kosong. }
+    
     jumlahPesanan := 0;
     totalItem := 0;
     totalBelanja := 0;
@@ -859,12 +847,12 @@ begin
     write('Nama pelanggan : ');
     readln(namaPelanggan);
 
-    selesaiProses := false; { Transaksi berakhir setelah pembayaran dan struk. }
+    selesaiProses := false; 
 
     repeat
-        selesaiPesanan := false; { Menu kelola akan berulang sampai pilih selesai. }
+        selesaiPesanan := false; 
 
-        { Loop menu kelola kembali setelah tambah, lihat, edit, atau batal. }
+        
         repeat
 
             clrscr;
@@ -929,7 +917,7 @@ begin
 
         until selesaiPesanan = true;
 
-        { Menampilkan ringkasan sebelum pembayaran }
+        
         clrscr;
 
     writeln('==============================================');
@@ -937,7 +925,7 @@ begin
     writeln('==============================================');
     writeln;
 
-    { Ringkasan menggunakan kondisi array terakhir sebelum pembayaran. }
+    
     for i := 1 to jumlahPesanan do
     begin
         writeln(i:2, '. ',
@@ -968,7 +956,7 @@ begin
         end
         else if pilihanPesan = 2 then
         begin
-            { Kembali ke menu kelola pesanan tanpa menghapus data }
+            
         end
         else
         begin
@@ -983,11 +971,10 @@ begin
 end;
 
 
-{ ========================================================= }
-{                         PROGRAM UTAMA                     }
-{ ========================================================= }
 
-{ Memulai fitur program dan mengulang menu utama sampai pengguna memilih keluar. }
+
+
+
 begin
 
     repeat

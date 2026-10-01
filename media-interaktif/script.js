@@ -326,7 +326,7 @@ function initSimulation() {
       ? orders
           .map((order, index) => {
             const [name, price] = menuItems[order.menuIndex];
-            return `<div class="cart-row"><span>${index + 1}. ${name} | ${formatRupiah(price)} x ${order.quantity}</span><strong>${formatRupiah(price * order.quantity)}</strong><button class="cart-remove" type="button" data-remove-order="${index}" aria-label="Kurangi satu ${name}" ${stage !== "ordering" ? "disabled" : ""}>−</button></div>`;
+            return `<div class="cart-row"><span>${index + 1}. ${name} | ${formatRupiah(price)} x ${order.quantity}</span><strong>${formatRupiah(price * order.quantity)}</strong><button class="cart-remove" type="button" data-remove-order="${index}" aria-label="Kurangi satu ${name}" title="Kurangi satu item" ${stage !== "ordering" ? "disabled" : ""}>−</button><button class="cart-cancel" type="button" data-cancel-order="${index}" aria-label="Batalkan semua ${name}" title="Batalkan pesanan ini" ${stage !== "ordering" ? "disabled" : ""}>×</button></div>`;
           })
           .join("")
       : '<p class="muted">Belum ada pesanan.</p>';
@@ -338,6 +338,15 @@ function initSimulation() {
         orders[index].quantity -= 1;
         if (orders[index].quantity === 0) orders.splice(index, 1);
         statusMessage = "Jumlah pesanan dikurangi satu.";
+        render();
+      });
+    });
+    cartList.querySelectorAll("[data-cancel-order]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const index = Number(button.dataset.cancelOrder);
+        const [name] = menuItems[orders[index].menuIndex];
+        orders.splice(index, 1);
+        statusMessage = `${name} dibatalkan dari pesanan.`;
         render();
       });
     });
@@ -360,7 +369,7 @@ function initSimulation() {
           ? `<p class="receipt-status">${statusMessage || "Masukkan uang pembayaran untuk melanjutkan."}</p>`
           : stage === "summary"
             ? '<p class="receipt-status">Periksa ringkasan, lalu lanjutkan pembayaran atau kembali mengubah pesanan.</p>'
-            : `<p class="receipt-status">${orders.length ? "Pesanan dapat ditambah atau dikurangi." : "Tambahkan menu untuk memulai pesanan."}</p>`;
+            : `<p class="receipt-status">${orders.length ? "Pesanan dapat ditambah, dikurangi, atau dibatalkan." : "Tambahkan menu untuk memulai pesanan."}</p>`;
     receipt.innerHTML = `<div class="receipt-title">WARUNG PAK DIN<br>${stage === "paid" ? "STRUK PEMBAYARAN" : "RINGKASAN PESANAN"}</div><p>Pelanggan: ${escapeHtml(customer.value.trim()) || "-"}</p><div class="receipt-orders">${orderLines || "Belum ada pesanan."}</div><div class="receipt-meta">Jumlah jenis pesanan: ${orders.length}<br>Total item: ${totalItems}</div><div class="total-line"><span>Total belanja</span><span>${formatRupiah(total)}</span></div>${paymentDetails}`;
   };
 

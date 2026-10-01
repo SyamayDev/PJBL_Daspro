@@ -34,6 +34,7 @@
             <div class="tabs">
               <button class="tab-button active" data-tab="tambah">Tambah</button
               ><button class="tab-button" data-tab="edit">Edit</button
+              ><button class="tab-button" data-tab="batal">Batalkan</button
               ><button class="tab-button" data-tab="bayar">Bayar</button>
             </div>
             <article class="tab-panel active" data-panel="tambah">
@@ -61,6 +62,20 @@
                 jumlahKurang;<br />pesanan[nomorEdit].jumlah :=
                 pesanan[nomorEdit].jumlah - jumlahKurang;<br />pesanan[nomorEdit].subtotal
                 := pesanan[nomorEdit].harga * pesanan[nomorEdit].jumlah;</span
+              >
+            </article>
+            <article class="tab-panel" data-panel="batal">
+              <h2>Membatalkan satu jenis pesanan</h2>
+              <p>
+                Pembatalan menghapus seluruh jumlah pada satu baris pesanan.
+                Program mengurangi subtotal dan total item, merapatkan array,
+                lalu mengurangi jumlah jenis pesanan.
+              </p>
+              <span class="formula"
+                >totalItem := totalItem - pesanan[nomorBatal].jumlah;<br />totalBelanja
+                := totalBelanja - pesanan[nomorBatal].subtotal;<br />FOR i :=
+                nomorBatal TO jumlahPesanan - 1 DO pesanan[i] := pesanan[i +
+                1];<br />jumlahPesanan := jumlahPesanan - 1;</span
               >
             </article>
             <article class="tab-panel" data-panel="bayar">

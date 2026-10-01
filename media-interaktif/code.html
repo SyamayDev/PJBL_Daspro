@@ -34,6 +34,7 @@
             <div class="tabs">
               <button class="tab-button active" data-tab="data">Data</button
               ><button class="tab-button" data-tab="menu">CASE OF</button
+              ><button class="tab-button" data-tab="batal">Batalkan</button
               ><button class="tab-button" data-tab="bayar">Pembayaran</button
               ><button class="tab-button" data-tab="struk">Cetak struk</button>
             </div>
@@ -84,6 +85,17 @@ repeat
 until pembayaranSelesai = true;</code></pre>
               <p class="muted">
                 REPEAT UNTIL menjamin pembayaran valid sebelum struk dicetak.
+              </p>
+            </div>
+            <div class="tab-panel" data-panel="batal">
+              <pre><code>totalItem := totalItem - pesanan[nomorBatal].jumlah;
+totalBelanja := totalBelanja - pesanan[nomorBatal].subtotal;
+for i := nomorBatal to jumlahPesanan - 1 do
+  pesanan[i] := pesanan[i + 1];
+jumlahPesanan := jumlahPesanan - 1;</code></pre>
+              <p class="muted">
+                Pembatalan menghapus seluruh satu jenis menu, memperbarui total,
+                lalu merapatkan array agar nomor pesanan berurutan.
               </p>
             </div>
             <div class="tab-panel" data-panel="struk">

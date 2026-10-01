@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 1930" role="img" aria-labelledby="title desc">
   <title id="title">Flowchart sistem pemesanan Warung Pak Din</title>
-  <desc id="desc">Alur pemesanan beberapa menu dengan pilihan tambah, lihat, edit, batalkan, ringkasan, validasi pembayaran, dan cetak struk.</desc>
+  <desc id="desc">Alur pemesanan beberapa menu dengan pembatalan seluruh sesi yang mengosongkan transaksi dan kembali ke menu utama.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#475569" /></marker>
     <style>
@@ -55,12 +55,15 @@
   <text class="detail" x="805" y="737" text-anchor="middle">Kurangi jumlah, hitung ulang subtotal</text>
   <text class="detail" x="805" y="760" text-anchor="middle">Hapus baris jika jumlah menjadi 0</text>
   <rect class="node warn" x="365" y="840" width="300" height="115" rx="10" />
-  <text class="label" x="515" y="870" text-anchor="middle">Batalkan pesanan</text>
-  <text class="detail" x="515" y="896" text-anchor="middle">Pilih nomor record pesanan</text>
-  <text class="detail" x="515" y="920" text-anchor="middle">Kurangi jumlah dan subtotal dari total</text>
-  <text class="detail" x="515" y="943" text-anchor="middle">Hapus record dan rapatkan array</text>
+  <text class="label" x="515" y="870" text-anchor="middle">Batalkan sesi</text>
+  <text class="detail" x="515" y="896" text-anchor="middle">Hapus semua pesanan dalam sesi</text>
+  <text class="detail" x="515" y="920" text-anchor="middle">Atur seluruh total menjadi 0</text>
+  <text class="detail" x="515" y="943" text-anchor="middle">Kembali ke menu utama</text>
   <path class="loop" d="M195 791v19H18V424h282" />
-  <path class="loop" d="M365 897H3V424h297" />
+  <path class="loop" d="M365 897H3V320H20" />
+  <rect class="node input" x="20" y="280" width="250" height="80" rx="10" />
+  <text class="label" x="145" y="310" text-anchor="middle">Menu utama</text>
+  <text class="detail" x="145" y="336" text-anchor="middle">Batalkan sesi untuk kembali ke sini</text>
   <path class="loop" d="M500 753v57h630V424H700" />
   <path class="loop" d="M805 791v19h325" />
   <text class="branch" x="900" y="824" text-anchor="middle">4. Selesai</text>

@@ -269,7 +269,11 @@ function initSimulation() {
   const quantity = document.querySelector("#quantity");
   const payment = document.querySelector("#payment");
   const cartList = document.querySelector("#cart-list");
+  const cartSection = document.querySelector("#cart-section");
   const addButton = document.querySelector("#add-item");
+  const beginButton = document.querySelector("#begin-order");
+  const cancelButton = document.querySelector("#cancel-session");
+  const simulationHome = document.querySelector("#simulation-home");
   const finishButton = document.querySelector("#finish-order");
   const orderActions = document.querySelector("#order-actions");
   const paymentPanel = document.querySelector("#payment-panel");
@@ -282,7 +286,11 @@ function initSimulation() {
     !quantity ||
     !payment ||
     !cartList ||
+    !cartSection ||
     !addButton ||
+    !beginButton ||
+    !cancelButton ||
+    !simulationHome ||
     !finishButton ||
     !orderActions ||
     !paymentPanel ||
@@ -298,7 +306,7 @@ function initSimulation() {
     .join("");
 
   let orders = [];
-  let stage = "ordering";
+  let stage = "home";
   let paidAmount = 0;
   let change = 0;
   let statusMessage = "";
@@ -326,12 +334,14 @@ function initSimulation() {
       ? orders
           .map((order, index) => {
             const [name, price] = menuItems[order.menuIndex];
-            return `<div class="cart-row"><span>${index + 1}. ${name} | ${formatRupiah(price)} x ${order.quantity}</span><strong>${formatRupiah(price * order.quantity)}</strong><button class="cart-remove" type="button" data-remove-order="${index}" aria-label="Kurangi satu ${name}" title="Kurangi satu item" ${stage !== "ordering" ? "disabled" : ""}>−</button><button class="cart-cancel" type="button" data-cancel-order="${index}" aria-label="Batalkan semua ${name}" title="Batalkan pesanan ini" ${stage !== "ordering" ? "disabled" : ""}>×</button></div>`;
+            return `<div class="cart-row"><span>${index + 1}. ${name} | ${formatRupiah(price)} x ${order.quantity}</span><strong>${formatRupiah(price * order.quantity)}</strong><button class="cart-remove" type="button" data-remove-order="${index}" aria-label="Kurangi satu ${name}" title="Kurangi satu item" ${stage !== "ordering" ? "disabled" : ""}>−</button></div>`;
           })
           .join("")
       : '<p class="muted">Belum ada pesanan.</p>';
 
+    simulationHome.hidden = stage !== "home";
     form.querySelector(".order-entry").hidden = stage !== "ordering";
+    cartSection.hidden = stage === "home";
     cartList.querySelectorAll("[data-remove-order]").forEach((button) => {
       button.addEventListener("click", () => {
         const index = Number(button.dataset.removeOrder);
@@ -341,15 +351,7 @@ function initSimulation() {
         render();
       });
     });
-    cartList.querySelectorAll("[data-cancel-order]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const index = Number(button.dataset.cancelOrder);
-        const [name] = menuItems[orders[index].menuIndex];
-        orders.splice(index, 1);
-        statusMessage = `${name} dibatalkan dari pesanan.`;
-        render();
-      });
-    });
+    cancelButton.hidden = stage !== "ordering";
     finishButton.hidden = stage !== "ordering";
     finishButton.disabled = orders.length === 0;
     orderActions.hidden = stage !== "summary";
@@ -362,6 +364,10 @@ function initSimulation() {
         return `${index + 1}. ${name} | ${formatRupiah(price)} x ${order.quantity} = ${formatRupiah(price * order.quantity)}`;
       })
       .join("<br>");
+    if (stage === "home") {
+      receipt.innerHTML = '<div class="receipt-title">WARUNG PAK DIN<br>SISTEM PEMESANAN MAKANAN</div><p class="receipt-status">Pilih Mulai Pesanan untuk membuka sesi baru.</p>';
+      return;
+    }
     const paymentDetails =
       stage === "paid"
         ? `<p>Pembayaran: ${formatRupiah(paidAmount)}<br>Kembalian: ${formatRupiah(change)}</p><p class="receipt-status">Pembayaran berhasil. Terima kasih sudah berbelanja.</p>`
@@ -369,9 +375,28 @@ function initSimulation() {
           ? `<p class="receipt-status">${statusMessage || "Masukkan uang pembayaran untuk melanjutkan."}</p>`
           : stage === "summary"
             ? '<p class="receipt-status">Periksa ringkasan, lalu lanjutkan pembayaran atau kembali mengubah pesanan.</p>'
-            : `<p class="receipt-status">${orders.length ? "Pesanan dapat ditambah, dikurangi, atau dibatalkan." : "Tambahkan menu untuk memulai pesanan."}</p>`;
+            : `<p class="receipt-status">${orders.length ? "Pesanan dapat ditambah atau dikurangi, atau seluruh sesi dibatalkan." : "Tambahkan menu untuk memulai pesanan."}</p>`;
     receipt.innerHTML = `<div class="receipt-title">WARUNG PAK DIN<br>${stage === "paid" ? "STRUK PEMBAYARAN" : "RINGKASAN PESANAN"}</div><p>Pelanggan: ${escapeHtml(customer.value.trim()) || "-"}</p><div class="receipt-orders">${orderLines || "Belum ada pesanan."}</div><div class="receipt-meta">Jumlah jenis pesanan: ${orders.length}<br>Total item: ${totalItems}</div><div class="total-line"><span>Total belanja</span><span>${formatRupiah(total)}</span></div>${paymentDetails}`;
   };
+
+  beginButton.addEventListener("click", () => {
+    stage = "ordering";
+    statusMessage = "";
+    render();
+    customer.focus();
+  });
+
+  cancelButton.addEventListener("click", () => {
+    orders = [];
+    customer.value = "";
+    quantity.value = "1";
+    payment.value = "";
+    paidAmount = 0;
+    change = 0;
+    stage = "home";
+    statusMessage = "Seluruh pesanan dalam sesi ini telah dihapus. Kembali ke menu utama.";
+    render();
+  });
 
   addButton.addEventListener("click", () => {
     const menuIndex = Number(menu.value);

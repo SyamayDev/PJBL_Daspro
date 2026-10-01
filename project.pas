@@ -591,83 +591,26 @@ begin
 end;
 
 { ========================================================= }
-{                 BATALKAN SATU PESANAN                    }
+{                 BATALKAN SESI PESANAN                    }
 { ========================================================= }
 
-{ Menghapus seluruh kuantitas satu record dan menyinkronkan ringkasan transaksi. }
-procedure BatalkanPesanan;
-var
-    nomorBatal : integer;
+{ Mengosongkan seluruh transaksi aktif dan kembali ke menu utama. }
+procedure BatalkanPesanan(var sesiDibatalkan : boolean);
 begin
-    clrscr; { Tampilkan daftar yang dapat dibatalkan. }
+    clrscr;
 
     writeln('==============================================================');
-    writeln('                    BATALKAN PESANAN                         ');
+    writeln('                 BATALKAN SESI PESANAN                       ');
     writeln('==============================================================');
+    jumlahPesanan := 0;
+    totalItem := 0;
+    totalBelanja := 0;
+    sesiDibatalkan := true;
 
-    { Tidak ada nomor yang valid untuk dipilih jika daftar kosong. }
-    if jumlahPesanan = 0 then
-    begin
-        writeln;
-        writeln('Belum ada pesanan yang dapat dibatalkan.');
-        writeln('Tekan ENTER untuk kembali...');
-        readln;
-    end
-    else
-    begin
-        { Tampilkan nomor record agar pengguna memilih baris yang tepat. }
-        writeln;
-        writeln('No  Menu                         Qty       Subtotal');
-        writeln('--------------------------------------------------------------');
-        for i := 1 to jumlahPesanan do
-        begin
-            writeln(i:2, '  ',
-                    pesanan[i].namaMenu:28,
-                    pesanan[i].jumlah:4,
-                    '      Rp', pesanan[i].subtotal:8);
-        end;
-        writeln('--------------------------------------------------------------');
-
-        write('Masukkan nomor pesanan yang dibatalkan : ');
-        readln(nomorBatal);
-
-        { Validasi nomor sebelum membaca atau mengubah array. }
-        if (nomorBatal < 1) or (nomorBatal > jumlahPesanan) then
-        begin
-            writeln;
-            writeln('Nomor pesanan tidak valid!');
-            writeln('Pilih nomor 1 sampai ', jumlahPesanan, '.');
-        end
-        else
-        begin
-            { Kurangi kedua total menggunakan nilai record yang akan dihapus. }
-            { Pembatalan menghapus seluruh kuantitas pada satu jenis menu. }
-            totalItem := totalItem - pesanan[nomorBatal].jumlah;
-            totalBelanja := totalBelanja - pesanan[nomorBatal].subtotal;
-
-            writeln;
-            writeln('Pesanan ', pesanan[nomorBatal].namaMenu, ' dibatalkan.');
-
-            { Rapatkan array dengan menyalin record di kanan satu posisi ke kiri. }
-            { Salin satu per satu record setelah baris batal ke kiri. }
-            for i := nomorBatal to jumlahPesanan - 1 do
-            begin
-                pesanan[i] := pesanan[i + 1];
-            end;
-
-            { Jumlah jenis berkurang satu; slot terakhir tidak lagi digunakan. }
-            { Slot terakhir tidak lagi termasuk bagian array yang terpakai. }
-            jumlahPesanan := jumlahPesanan - 1;
-
-            writeln('Jumlah jenis pesanan : ', jumlahPesanan);
-            writeln('Total item           : ', totalItem);
-            writeln('Total belanja        : Rp', totalBelanja);
-        end;
-
-        writeln;
-        writeln('Tekan ENTER untuk kembali...');
-        readln;
-    end;
+    writeln;
+    writeln('Seluruh pesanan dalam sesi ini telah dihapus.');
+    writeln('Kembali ke menu utama...');
+    readln;
 end;
 
 
@@ -843,6 +786,7 @@ procedure MulaiPesanan;
 var
     selesaiPesanan : boolean;
     selesaiProses  : boolean;
+    sesiDibatalkan : boolean;
 begin
     clrscr;
 
@@ -860,11 +804,12 @@ begin
     readln(namaPelanggan);
 
     selesaiProses := false; { Transaksi berakhir setelah pembayaran dan struk. }
+    sesiDibatalkan := false;
 
     repeat
         selesaiPesanan := false; { Menu kelola akan berulang sampai pilih selesai. }
 
-        { Loop menu kelola kembali setelah tambah, lihat, edit, atau batal. }
+        { Loop menu kelola kembali setelah tambah, lihat, atau edit. }
         repeat
 
             clrscr;
@@ -901,7 +846,7 @@ begin
             end
             else if pilihanPesan = 5 then
             begin
-                BatalkanPesanan;
+                BatalkanPesanan(sesiDibatalkan);
             end
             else if pilihanPesan = 4 then
             begin
@@ -927,8 +872,10 @@ begin
                 readln;
             end;
 
-        until selesaiPesanan = true;
+        until (selesaiPesanan = true) or (sesiDibatalkan = true);
 
+        if not sesiDibatalkan then
+        begin
         { Menampilkan ringkasan sebelum pembayaran }
         clrscr;
 
@@ -978,8 +925,9 @@ begin
             writeln('Tekan ENTER untuk kembali ke pesanan...');
             readln;
         end;
+        end;
 
-    until selesaiProses = true;
+    until (selesaiProses = true) or (sesiDibatalkan = true);
 end;
 
 

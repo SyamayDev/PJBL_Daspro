@@ -587,79 +587,23 @@ end;
 
 
 
-procedure BatalkanPesanan;
-var
-    nomorBatal : integer;
+procedure BatalkanPesanan(var sesiDibatalkan : boolean);
 begin
-    clrscr; 
+    clrscr;
 
     writeln('==============================================================');
-    writeln('                    BATALKAN PESANAN                         ');
+    writeln('                 BATALKAN SESI PESANAN                       ');
     writeln('==============================================================');
 
-    
-    if jumlahPesanan = 0 then
-    begin
-        writeln;
-        writeln('Belum ada pesanan yang dapat dibatalkan.');
-        writeln('Tekan ENTER untuk kembali...');
-        readln;
-    end
-    else
-    begin
-        
-        writeln;
-        writeln('No  Menu                         Qty       Subtotal');
-        writeln('--------------------------------------------------------------');
-        for i := 1 to jumlahPesanan do
-        begin
-            writeln(i:2, '  ',
-                    pesanan[i].namaMenu:28,
-                    pesanan[i].jumlah:4,
-                    '      Rp', pesanan[i].subtotal:8);
-        end;
-        writeln('--------------------------------------------------------------');
+    jumlahPesanan := 0;
+    totalItem := 0;
+    totalBelanja := 0;
+    sesiDibatalkan := true;
 
-        write('Masukkan nomor pesanan yang dibatalkan : ');
-        readln(nomorBatal);
-
-        
-        if (nomorBatal < 1) or (nomorBatal > jumlahPesanan) then
-        begin
-            writeln;
-            writeln('Nomor pesanan tidak valid!');
-            writeln('Pilih nomor 1 sampai ', jumlahPesanan, '.');
-        end
-        else
-        begin
-            
-            
-            totalItem := totalItem - pesanan[nomorBatal].jumlah;
-            totalBelanja := totalBelanja - pesanan[nomorBatal].subtotal;
-
-            writeln;
-            writeln('Pesanan ', pesanan[nomorBatal].namaMenu, ' dibatalkan.');
-
-            
-            
-            for i := nomorBatal to jumlahPesanan - 1 do
-            begin
-                pesanan[i] := pesanan[i + 1];
-            end;
-
-            
-            
-            jumlahPesanan := jumlahPesanan - 1;
-
-            writeln('Jumlah jenis pesanan : ', jumlahPesanan);
-            writeln('Total item           : ', totalItem);
-            writeln('Total belanja        : Rp', totalBelanja);
-        end;
-
-        writeln;
-        writeln('Tekan ENTER untuk kembali...');
-        readln;
-    end;
+    writeln;
+    writeln('Seluruh pesanan dalam sesi ini telah dihapus.');
+    writeln('Kembali ke menu utama...');
+    readln;
 end;
 
 
@@ -831,6 +775,7 @@ procedure MulaiPesanan;
 var
     selesaiPesanan : boolean;
     selesaiProses  : boolean;
+    sesiDibatalkan : boolean;
 begin
     clrscr;
 
@@ -847,10 +792,11 @@ begin
     write('Nama pelanggan : ');
     readln(namaPelanggan);
 
-    selesaiProses := false; 
+    selesaiProses := false;
+    sesiDibatalkan := false;
 
     repeat
-        selesaiPesanan := false; 
+        selesaiPesanan := false;
 
         
         repeat
@@ -889,7 +835,7 @@ begin
             end
             else if pilihanPesan = 5 then
             begin
-                BatalkanPesanan;
+                BatalkanPesanan(sesiDibatalkan);
             end
             else if pilihanPesan = 4 then
             begin
@@ -915,9 +861,10 @@ begin
                 readln;
             end;
 
-        until selesaiPesanan = true;
+        until (selesaiPesanan = true) or (sesiDibatalkan = true);
 
-        
+        if not sesiDibatalkan then
+        begin
         clrscr;
 
     writeln('==============================================');
@@ -966,8 +913,9 @@ begin
             writeln('Tekan ENTER untuk kembali ke pesanan...');
             readln;
         end;
+        end;
 
-    until selesaiProses = true;
+    until (selesaiProses = true) or (sesiDibatalkan = true);
 end;
 
 

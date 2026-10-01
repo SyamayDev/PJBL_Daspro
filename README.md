@@ -47,10 +47,10 @@ Buka `media-interaktif/index.html` di browser. Untuk menerbitkan melalui GitHub 
 
 1. Tampilkan menu utama: mulai pesanan, tentang program, atau keluar.
 2. Saat transaksi dimulai, set jumlah pesanan, total item, dan total belanja ke nol, lalu minta nama pelanggan.
-3. Pengguna dapat menambah, melihat, mengedit jumlah, atau membatalkan satu jenis pesanan sampai memilih selesai. Setiap jenis pesanan disimpan sebagai record di array berkapasitas 100 jenis.
+3. Pengguna dapat menambah, melihat, dan mengedit jumlah pesanan sampai memilih selesai. Opsi batalkan menghapus seluruh sesi pesanan dan kembali ke menu utama. Setiap jenis pesanan disimpan sebagai record di array berkapasitas 100 jenis.
 4. Untuk pesanan baru, program memvalidasi pilihan menu 1-30 dan jumlah positif, menghitung `harga × jumlah`, lalu memperbarui subtotal, total item, dan total belanja.
-5. Untuk pengurangan, program memvalidasi jumlah pengurangan. Jika jumlah suatu record menjadi nol, record itu dihapus dari array. Opsi batalkan menghapus seluruh jumlah dan subtotal pada satu record.
-6. Tampilkan ringkasan. Pengguna dapat kembali mengubah atau membatalkan pesanan, atau melanjutkan pembayaran.
+5. Untuk pengurangan, program memvalidasi jumlah pengurangan. Jika jumlah suatu record menjadi nol, record itu dihapus dari array. Pembatalan sesi mengatur jumlah pesanan, total item, dan total belanja menjadi nol.
+6. Tampilkan ringkasan. Pengguna dapat kembali mengubah pesanan atau melanjutkan pembayaran.
 7. Ulangi input pembayaran sampai uang setidaknya sama dengan total belanja, hitung kembalian, lalu cetak semua baris pesanan dan ringkasan transaksi.
 
 ## Media Interaktif
@@ -63,7 +63,7 @@ Elemen pembelajaran dan interaksi:
 - Baris tabel input yang dapat dipilih untuk menampilkan catatan validasi.
 - Tabs untuk melihat proses matematis dan potongan source code Pascal.
 - Stepper untuk menelusuri tahapan algoritma.
-- Simulasi keranjang multi-menu, pengurangan jumlah, pembatalan satu jenis pesanan, ringkasan, validasi pembayaran, dan struk.
+- Simulasi keranjang multi-menu, pengurangan jumlah, pembatalan seluruh sesi dan kembali ke menu utama, ringkasan, validasi pembayaran, dan struk.
 - Latihan tebak output dengan pemeriksaan jawaban dan feedback.
 - Quiz dengan indikator kemajuan, feedback per jawaban, dan nilai akhir.
 - Animasi masuk bertahap yang menghormati pengaturan reduced motion perangkat.
@@ -79,11 +79,10 @@ Berikut skenario yang disarankan untuk demonstrasi program dan simulasi. Isikan 
 | 3   | Pilih nomor menu 0 atau 31                                            | Program menolak pilihan dan meminta menu 1 sampai 30.                                                     |
 | 4   | Tambahkan menu dengan jumlah 0 atau negatif                           | Program menolak jumlah; record dan total tidak berubah.                                                   |
 | 5   | Pesan 2 Nasi Goreng lalu kurangi 1                                    | Jumlah menjadi 1, subtotal menjadi Rp15.000, total item dan total belanja ikut berkurang.                 |
-| 6   | Batalkan satu jenis pesanan di antara beberapa pesanan                | Seluruh jumlah dan subtotal baris terpilih dihapus; record lain tetap dan total diperbarui.               |
-| 7   | Batalkan nomor pesanan yang tidak ada                                 | Program menolak nomor di luar rentang `1..jumlahPesanan`.                                                 |
-| 8   | Batalkan pesanan terakhir yang tersisa                                | Ringkasan menjadi nol; program tidak mengizinkan transaksi diselesaikan sebelum ada pesanan baru.         |
-| 9   | Pilih selesai saat belum ada pesanan                                  | Program menolak menyelesaikan transaksi dan kembali ke menu kelola pesanan.                               |
-| 10  | Penuhi 100 jenis pesanan lalu coba menambah satu lagi                 | Program menolak pesanan berikutnya karena batas `MAX_PESANAN`.                                            |
+| 6   | Batalkan sesi setelah menambahkan beberapa pesanan                     | Semua pesanan dan total menjadi nol; ringkasan dan pembayaran dilewati, lalu menu utama ditampilkan.     |
+| 7   | Pilih batal saat belum ada pesanan                                     | Sesi kosong tetap ditutup dan program kembali ke menu utama.                                               |
+| 8   | Pilih selesai saat belum ada pesanan                                   | Program menolak menyelesaikan transaksi dan kembali ke menu kelola pesanan.                               |
+| 9   | Penuhi 100 jenis pesanan lalu coba menambah satu lagi                  | Program menolak pesanan berikutnya karena batas `MAX_PESANAN`.                                            |
 
 ## Kesesuaian Pseudocode
 

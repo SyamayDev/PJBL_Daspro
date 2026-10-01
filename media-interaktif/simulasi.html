@@ -32,11 +32,18 @@
           </header>
           <div class="sim-grid">
             <form id="cashier-form" class="card">
-              <div class="field">
-                <label for="customer-name">Nama pelanggan</label
-                ><input id="customer-name" value="Sinta" required />
-              </div>
+              <section id="simulation-home" aria-labelledby="simulation-home-title">
+                <h2 id="simulation-home-title">WARUNG PAK DIN</h2>
+                <p>SISTEM PEMESANAN MAKANAN</p>
+                <button class="btn" id="begin-order" type="button">
+                  Mulai Pesanan
+                </button>
+              </section>
               <div class="order-entry">
+                <div class="field">
+                  <label for="customer-name">Nama pelanggan</label
+                  ><input id="customer-name" required />
+                </div>
                 <div class="field">
                   <label for="menu-select">Pilih menu</label
                   ><select id="menu-select"></select>
@@ -49,10 +56,17 @@
                   Tambah pesanan
                 </button>
               </div>
-              <section class="cart-section" aria-labelledby="cart-heading">
+              <section
+                id="cart-section"
+                class="cart-section"
+                aria-labelledby="cart-heading"
+              >
                 <h2 id="cart-heading">Pesanan sementara</h2>
                 <div id="cart-list" class="cart-list"></div>
               </section>
+              <button class="btn secondary" id="cancel-session" type="button">
+                Batalkan Pesanan
+              </button>
               <p
                 id="simulation-message"
                 class="simulation-message"
@@ -84,10 +98,10 @@
           <div class="card" style="margin-top: 20px">
             <h2>Alur transaksi</h2>
             <p>
-              Pesanan dapat ditambah atau dikurangi sebelum pembayaran. Jika
-              perlu, satu jenis menu dapat dibatalkan seluruhnya. Jika uang
-              kurang dari total belanja, masukkan nominal baru untuk mengulang
-              validasi seperti
+              Pesanan dapat ditambah atau dikurangi sebelum pembayaran.
+              Batalkan Pesanan menghapus seluruh sesi dan mengembalikan tampilan
+              ke menu utama. Jika uang kurang dari total belanja, masukkan
+              nominal baru untuk mengulang validasi seperti
               <code class="inline-code">REPEAT UNTIL</code>.
             </p>
           </div>

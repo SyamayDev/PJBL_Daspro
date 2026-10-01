@@ -65,17 +65,15 @@
               >
             </article>
             <article class="tab-panel" data-panel="batal">
-              <h2>Membatalkan satu jenis pesanan</h2>
+              <h2>Membatalkan seluruh sesi</h2>
               <p>
-                Pembatalan menghapus seluruh jumlah pada satu baris pesanan.
-                Program mengurangi subtotal dan total item, merapatkan array,
-                lalu mengurangi jumlah jenis pesanan.
+                Pembatalan menghapus semua pesanan dalam sesi aktif, mengatur
+                seluruh total menjadi nol, lalu kembali ke menu utama tanpa
+                menampilkan ringkasan atau melanjutkan pembayaran.
               </p>
               <span class="formula"
-                >totalItem := totalItem - pesanan[nomorBatal].jumlah;<br />totalBelanja
-                := totalBelanja - pesanan[nomorBatal].subtotal;<br />FOR i :=
-                nomorBatal TO jumlahPesanan - 1 DO pesanan[i] := pesanan[i +
-                1];<br />jumlahPesanan := jumlahPesanan - 1;</span
+                >jumlahPesanan := 0;<br />totalItem := 0;<br />totalBelanja :=
+                0;<br />sesiDibatalkan := TRUE;</span
               >
             </article>
             <article class="tab-panel" data-panel="bayar">

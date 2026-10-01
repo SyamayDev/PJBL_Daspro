@@ -464,44 +464,21 @@ END
 
 ---
 
-# 8. PROSEDUR BATALKAN PESANAN
+# 8. PROSEDUR BATALKAN SESI PESANAN
 
 ```text
-PROCEDURE BatalkanPesanan
-
-DEKLARASI
-    nomorBatal : INTEGER
+PROCEDURE BatalkanPesanan(sesiDibatalkan)
 
 BEGIN
     Bersihkan layar
+    jumlahPesanan <- 0
+    totalItem <- 0
+    totalBelanja <- 0
+    sesiDibatalkan <- TRUE
 
-    IF jumlahPesanan = 0 THEN
-        Tampilkan "Belum ada pesanan yang dapat dibatalkan."
-        Tunggu ENTER
-    ELSE
-        FOR i <- 1 TO jumlahPesanan DO
-            Tampilkan nomor, nama menu, jumlah, subtotal
-        END FOR
-
-        INPUT nomorBatal
-
-        IF nomorBatal < 1 OR nomorBatal > jumlahPesanan THEN
-            Tampilkan "Nomor pesanan tidak valid."
-        ELSE
-            totalItem <- totalItem - pesanan[nomorBatal].jumlah
-            totalBelanja <- totalBelanja - pesanan[nomorBatal].subtotal
-
-            FOR i <- nomorBatal TO jumlahPesanan - 1 DO
-                pesanan[i] <- pesanan[i + 1]
-            END FOR
-
-            jumlahPesanan <- jumlahPesanan - 1
-            Tampilkan "Pesanan berhasil dibatalkan."
-            Tampilkan jumlahPesanan, totalItem, totalBelanja
-        END IF
-
-        Tunggu ENTER
-    END IF
+    Tampilkan "Seluruh pesanan dalam sesi ini telah dihapus."
+    Tampilkan "Tekan ENTER untuk kembali ke menu utama..."
+    Tunggu ENTER
 END
 ```
 
@@ -664,6 +641,7 @@ PROCEDURE MulaiPesanan
 DEKLARASI
     selesaiPesanan : BOOLEAN
     selesaiProses  : BOOLEAN
+    sesiDibatalkan : BOOLEAN
 
 BEGIN
 
@@ -678,6 +656,7 @@ BEGIN
     Input namaPelanggan
 
     selesaiProses ← FALSE
+    sesiDibatalkan ← FALSE
 
     REPEAT
 
@@ -714,7 +693,7 @@ BEGIN
 
             ELSE IF pilihanPesan = 5 THEN
 
-                BatalkanPesanan
+                BatalkanPesanan(sesiDibatalkan)
 
             ELSE IF pilihanPesan = 4 THEN
 
@@ -738,8 +717,9 @@ BEGIN
 
             END IF
 
-        UNTIL selesaiPesanan = TRUE
+        UNTIL selesaiPesanan = TRUE OR sesiDibatalkan = TRUE
 
+        IF sesiDibatalkan = FALSE THEN
 
         // MENAMPILKAN RINGKASAN PESANAN
 
@@ -787,7 +767,9 @@ BEGIN
 
         END IF
 
-    UNTIL selesaiProses = TRUE
+        END IF
+
+    UNTIL selesaiProses = TRUE OR sesiDibatalkan = TRUE
 
 END
 ```

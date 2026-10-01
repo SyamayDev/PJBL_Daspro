@@ -51,35 +51,117 @@ const formatRupiah = (value) =>
     maximumFractionDigits: 0,
   }).format(value);
 
-function buildNavigation() {
-  const nav = document.querySelector("[data-navigation]");
-  if (!nav) return;
+function buildSlideNavigation() {
   const current = document.body.dataset.page || "index.html";
-  nav.innerHTML = pageLinks
-    .map(
-      ([href, label], index) => `
-    <a class="nav-link ${href === current ? "active" : ""}" href="${href}">
-      <span class="nav-number">${String(index + 1).padStart(2, "0")}</span><span>${label}</span>
-    </a>`,
-    )
-    .join("");
-}
+  const currentIndex = pageLinks.findIndex(([href]) => href === current);
+  if (currentIndex < 0) return;
 
-function buildFloatingNavigation() {
-  const current = document.body.dataset.page || "index.html";
-  const index = pageLinks.findIndex(([href]) => href === current);
-  if (index < 0 || document.querySelector(".floating-nav")) return;
-  const previous = pageLinks[index - 1];
-  const next = pageLinks[index + 1];
-  const link = (item, direction) =>
+  const [currentHref, currentLabel] = pageLinks[currentIndex];
+  const previous = pageLinks[currentIndex - 1];
+  const next = pageLinks[currentIndex + 1];
+  const arrowLink = (item, direction) =>
     item
-      ? `<a href="${item[0]}" aria-label="${direction === "prev" ? "Halaman sebelumnya" : "Halaman berikutnya"}">${direction === "prev" ? "←" : "→"} ${item[1]}</a>`
-      : `<span class="disabled" aria-hidden="true"></span>`;
-  const nav = document.createElement("nav");
-  nav.className = "floating-nav";
-  nav.setAttribute("aria-label", "Navigasi halaman pembelajaran");
-  nav.innerHTML = `${link(previous, "prev")}<span class="page-count">${String(index + 1).padStart(2, "0")} / ${pageLinks.length}</span>${link(next, "next")}`;
-  document.body.appendChild(nav);
+      ? `<a class="slide-arrow" href="${item[0]}" aria-label="${direction === "previous" ? "Slide sebelumnya" : "Slide berikutnya"}" title="${direction === "previous" ? "Sebelumnya" : "Berikutnya"}">${direction === "previous" ? "←" : "→"}</a>`
+      : `<span class="slide-arrow" aria-disabled="true" aria-hidden="true">${direction === "previous" ? "←" : "→"}</span>`;
+
+  const menu = document.createElement("section");
+  menu.className = "slide-menu";
+  menu.id = "slide-menu";
+  menu.hidden = true;
+  menu.setAttribute("aria-label", "Daftar materi presentasi");
+  menu.innerHTML = `
+      <div class="slide-menu-panel" role="dialog" aria-modal="true" aria-labelledby="slide-menu-title">
+        <div class="slide-menu-heading">
+          <h2 id="slide-menu-title">Daftar materi</h2>
+          <button class="slide-menu-close" type="button" aria-label="Tutup daftar materi">Tutup</button>
+        </div>
+        <nav class="slide-menu-grid" aria-label="Pilih slide">
+          ${pageLinks
+            .map(
+              ([href, label], index) => `
+            <a class="slide-menu-link" href="${href}" ${href === currentHref ? 'aria-current="page"' : ""}>
+              <span class="slide-menu-number">${String(index + 1).padStart(2, "0")}</span>
+              <span>${label}</span>
+            </a>`,
+            )
+            .join("")}
+        </nav>
+      </div>`;
+
+  const controls = document.createElement("nav");
+  controls.className = "slide-controls";
+  controls.setAttribute("aria-label", "Kontrol slideshow");
+  controls.innerHTML = `
+      ${arrowLink(previous, "previous")}
+      <button class="slide-menu-toggle" type="button" aria-expanded="false" aria-haspopup="dialog" aria-controls="slide-menu">
+        <span aria-hidden="true">☰</span><span>Menu</span>
+      </button>
+      <div class="slide-status">
+        <span>${String(currentIndex + 1).padStart(2, "0")} / ${String(pageLinks.length).padStart(2, "0")} · ${currentLabel}</span>
+        <div class="slide-progress" role="progressbar" aria-label="Progres presentasi" aria-valuemin="1" aria-valuemax="${pageLinks.length}" aria-valuenow="${currentIndex + 1}">
+          <span style="width: ${((currentIndex + 1) / pageLinks.length) * 100}%"></span>
+        </div>
+      </div>
+      <button class="slide-fullscreen" type="button" aria-label="Masuk layar penuh" title="Layar penuh">⛶</button>
+      ${arrowLink(next, "next")}`;
+
+  document.body.append(menu, controls);
+
+  const toggle = controls.querySelector(".slide-menu-toggle");
+  const fullscreen = controls.querySelector(".slide-fullscreen");
+  const close = menu.querySelector(".slide-menu-close");
+  const firstLink = menu.querySelector(".slide-menu-link");
+  const setMenuOpen = (open) => {
+    menu.hidden = !open;
+    toggle.setAttribute("aria-expanded", String(open));
+    if (open) close.focus();
+    else toggle.focus();
+  };
+
+  toggle.addEventListener("click", () => setMenuOpen(menu.hidden));
+  fullscreen.addEventListener("click", async () => {
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await document.documentElement.requestFullscreen();
+    } catch {
+      fullscreen.title = "Layar penuh tidak tersedia di browser ini";
+    }
+  });
+  document.addEventListener("fullscreenchange", () => {
+    const isFullscreen = Boolean(document.fullscreenElement);
+    fullscreen.setAttribute(
+      "aria-label",
+      isFullscreen ? "Keluar dari layar penuh" : "Masuk layar penuh",
+    );
+    fullscreen.title = isFullscreen ? "Keluar layar penuh" : "Layar penuh";
+  });
+  close.addEventListener("click", () => setMenuOpen(false));
+  menu.addEventListener("click", (event) => {
+    if (event.target === menu) setMenuOpen(false);
+  });
+  menu.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenuOpen(false);
+    if (
+      event.key === "Tab" &&
+      !event.shiftKey &&
+      document.activeElement === close
+    ) {
+      event.preventDefault();
+      firstLink.focus();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (!menu.hidden) return;
+    if (
+      event.target.closest(
+        "input, textarea, select, button, a, [contenteditable='true']",
+      )
+    )
+      return;
+    if (event.key === "ArrowLeft" && previous)
+      window.location.href = previous[0];
+    if (event.key === "ArrowRight" && next) window.location.href = next[0];
+  });
 }
 
 function initAccordions() {
@@ -361,8 +443,7 @@ function initOutputGuess() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  buildNavigation();
-  buildFloatingNavigation();
+  buildSlideNavigation();
   initAccordions();
   initTabs();
   initStepper();

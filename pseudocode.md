@@ -1,5 +1,257 @@
 # PSEUDOCODE PROGRAM WARUNG PAK DIN
 
+## Pseudocode Utama (Siap Disalin ke Word)
+
+Salin satu blok berikut sebagai pseudocode utama. Rincian 30 pilihan menu tersedia pada bagian prosedur `TentukanMenu` di bawah.
+
+```text
+START
+
+KONSTANTA
+    MAX_PESANAN <- 100
+
+TIPE DATA
+    TPesanan = RECORD
+        namaMenu : STRING
+        harga : LONGINT
+        jumlah : INTEGER
+        subtotal : LONGINT
+    END RECORD
+
+DEKLARASI
+    pesanan : ARRAY[1..MAX_PESANAN] OF TPesanan
+    jumlahPesanan, totalItem : INTEGER
+    totalBelanja : LONGINT
+    pilihanUtama, pilihanPesan, pilihanMenu, jumlah : INTEGER
+    namaMenuDipilih : STRING
+    hargaMenuDipilih, subtotalPesanan : LONGINT
+    namaPelanggan : STRING
+    uangBayar, kembalian : LONGINT
+    selesaiPesanan, selesaiProses, pembayaranSelesai, selesaiTentang : BOOLEAN
+    nomorEdit, jumlahKurang : INTEGER
+    pilihanTentang : INTEGER
+    subtotalKurang : LONGINT
+    i : INTEGER
+
+PROCEDURE TentukanMenu(nomor)
+BEGIN
+    CASE nomor OF
+        1: namaMenuDipilih <- "Nasi Goreng"; hargaMenuDipilih <- 15000
+        2: namaMenuDipilih <- "Nasi Goreng Ayam"; hargaMenuDipilih <- 20000
+        3: namaMenuDipilih <- "Nasi Goreng Seafood"; hargaMenuDipilih <- 25000
+        4: namaMenuDipilih <- "Mie Goreng"; hargaMenuDipilih <- 13000
+        5: namaMenuDipilih <- "Mie Goreng Ayam"; hargaMenuDipilih <- 18000
+        6: namaMenuDipilih <- "Mie Goreng Seafood"; hargaMenuDipilih <- 23000
+        7: namaMenuDipilih <- "Ayam Geprek"; hargaMenuDipilih <- 18000
+        8: namaMenuDipilih <- "Ayam Penyet"; hargaMenuDipilih <- 20000
+        9: namaMenuDipilih <- "Ayam Bakar"; hargaMenuDipilih <- 22000
+        10: namaMenuDipilih <- "Ayam Goreng"; hargaMenuDipilih <- 20000
+        11: namaMenuDipilih <- "Lele Goreng"; hargaMenuDipilih <- 17000
+        12: namaMenuDipilih <- "Lele Bakar"; hargaMenuDipilih <- 19000
+        13: namaMenuDipilih <- "Soto Ayam"; hargaMenuDipilih <- 15000
+        14: namaMenuDipilih <- "Bakso"; hargaMenuDipilih <- 15000
+        15: namaMenuDipilih <- "Indomie Goreng"; hargaMenuDipilih <- 10000
+        16: namaMenuDipilih <- "Indomie Kuah"; hargaMenuDipilih <- 10000
+        17: namaMenuDipilih <- "Indomie + Telur"; hargaMenuDipilih <- 14000
+        18: namaMenuDipilih <- "Nasi Ayam Sambal"; hargaMenuDipilih <- 18000
+        19: namaMenuDipilih <- "Nasi Telur"; hargaMenuDipilih <- 12000
+        20: namaMenuDipilih <- "Nasi Campur"; hargaMenuDipilih <- 20000
+        21: namaMenuDipilih <- "Es Teh"; hargaMenuDipilih <- 5000
+        22: namaMenuDipilih <- "Teh Hangat"; hargaMenuDipilih <- 4000
+        23: namaMenuDipilih <- "Es Jeruk"; hargaMenuDipilih <- 7000
+        24: namaMenuDipilih <- "Jeruk Hangat"; hargaMenuDipilih <- 6000
+        25: namaMenuDipilih <- "Es Kopi"; hargaMenuDipilih <- 8000
+        26: namaMenuDipilih <- "Kopi Hangat"; hargaMenuDipilih <- 7000
+        27: namaMenuDipilih <- "Es Milo"; hargaMenuDipilih <- 8000
+        28: namaMenuDipilih <- "Air Mineral"; hargaMenuDipilih <- 4000
+        29: namaMenuDipilih <- "Es Cincau"; hargaMenuDipilih <- 8000
+        30: namaMenuDipilih <- "Jus Jeruk"; hargaMenuDipilih <- 10000
+    END CASE
+END PROCEDURE
+
+PROCEDURE TambahPesanan
+BEGIN
+    IF jumlahPesanan >= MAX_PESANAN THEN
+        Tampilkan "Pesanan sudah mencapai batas maksimal."
+    ELSE
+        Tampilkan daftar menu nomor 1 sampai 30
+        INPUT pilihanMenu
+
+        IF pilihanMenu < 1 OR pilihanMenu > 30 THEN
+            Tampilkan "Menu tidak tersedia."
+        ELSE
+            TentukanMenu(pilihanMenu)
+            INPUT jumlah
+
+            IF jumlah <= 0 THEN
+                Tampilkan "Jumlah pesanan tidak valid."
+            ELSE
+                subtotalPesanan <- hargaMenuDipilih * jumlah
+                jumlahPesanan <- jumlahPesanan + 1
+                pesanan[jumlahPesanan].namaMenu <- namaMenuDipilih
+                pesanan[jumlahPesanan].harga <- hargaMenuDipilih
+                pesanan[jumlahPesanan].jumlah <- jumlah
+                pesanan[jumlahPesanan].subtotal <- subtotalPesanan
+                totalBelanja <- totalBelanja + subtotalPesanan
+                totalItem <- totalItem + jumlah
+                Tampilkan "Pesanan berhasil ditambahkan dan total diperbarui."
+            END IF
+        END IF
+    END IF
+END PROCEDURE
+
+PROCEDURE TampilkanPesanan
+BEGIN
+    IF jumlahPesanan = 0 THEN
+        Tampilkan "Belum ada pesanan."
+    ELSE
+        FOR i <- 1 TO jumlahPesanan DO
+            Tampilkan nomor, pesanan[i].namaMenu,
+                      pesanan[i].jumlah, pesanan[i].subtotal
+        END FOR
+        Tampilkan jumlahPesanan, totalItem, totalBelanja
+    END IF
+END PROCEDURE
+
+PROCEDURE EditPesanan
+BEGIN
+    IF jumlahPesanan = 0 THEN
+        Tampilkan "Belum ada pesanan yang dapat diedit."
+    ELSE
+        TampilkanPesanan
+        INPUT nomorEdit
+
+        IF nomorEdit < 1 OR nomorEdit > jumlahPesanan THEN
+            Tampilkan "Nomor pesanan tidak valid."
+        ELSE
+            INPUT jumlahKurang
+            IF jumlahKurang <= 0 OR jumlahKurang > pesanan[nomorEdit].jumlah THEN
+                Tampilkan "Jumlah pengurangan tidak valid."
+            ELSE
+                subtotalKurang <- pesanan[nomorEdit].harga * jumlahKurang
+                pesanan[nomorEdit].jumlah <- pesanan[nomorEdit].jumlah - jumlahKurang
+                pesanan[nomorEdit].subtotal <- pesanan[nomorEdit].harga * pesanan[nomorEdit].jumlah
+                totalItem <- totalItem - jumlahKurang
+                totalBelanja <- totalBelanja - subtotalKurang
+
+                IF pesanan[nomorEdit].jumlah = 0 THEN
+                    FOR i <- nomorEdit TO jumlahPesanan - 1 DO
+                        pesanan[i] <- pesanan[i + 1]
+                    END FOR
+                    jumlahPesanan <- jumlahPesanan - 1
+                END IF
+                Tampilkan "Pesanan dan total transaksi berhasil diperbarui."
+            END IF
+        END IF
+    END IF
+END PROCEDURE
+
+PROCEDURE Pembayaran
+BEGIN
+    pembayaranSelesai <- FALSE
+    REPEAT
+        Tampilkan "Total belanja: ", totalBelanja
+        INPUT uangBayar
+
+        IF uangBayar < totalBelanja THEN
+            Tampilkan "Uang tidak mencukupi. Kekurangan: ", totalBelanja - uangBayar
+        ELSE
+            kembalian <- uangBayar - totalBelanja
+            pembayaranSelesai <- TRUE
+        END IF
+    UNTIL pembayaranSelesai = TRUE
+END PROCEDURE
+
+PROCEDURE CetakStruk
+BEGIN
+    Tampilkan "WARUNG PAK DIN - STRUK PEMBAYARAN"
+    Tampilkan "Pelanggan: ", namaPelanggan
+    FOR i <- 1 TO jumlahPesanan DO
+        Tampilkan nomor, pesanan[i].namaMenu,
+                  pesanan[i].jumlah, pesanan[i].subtotal
+    END FOR
+    Tampilkan jumlahPesanan, totalItem, totalBelanja, uangBayar, kembalian
+END PROCEDURE
+
+PROCEDURE MulaiPesanan
+BEGIN
+    jumlahPesanan <- 0
+    totalItem <- 0
+    totalBelanja <- 0
+    INPUT namaPelanggan
+    selesaiProses <- FALSE
+
+    REPEAT
+        selesaiPesanan <- FALSE
+        REPEAT
+            Tampilkan namaPelanggan, totalBelanja
+            Tampilkan "1. Tambah  2. Lihat  3. Edit  4. Selesai"
+            INPUT pilihanPesan
+
+            IF pilihanPesan = 1 THEN
+                TambahPesanan
+            ELSE IF pilihanPesan = 2 THEN
+                TampilkanPesanan
+            ELSE IF pilihanPesan = 3 THEN
+                EditPesanan
+            ELSE IF pilihanPesan = 4 THEN
+                IF jumlahPesanan = 0 THEN
+                    Tampilkan "Tambahkan pesanan terlebih dahulu."
+                ELSE
+                    selesaiPesanan <- TRUE
+                END IF
+            ELSE
+                Tampilkan "Pilihan tidak tersedia."
+            END IF
+        UNTIL selesaiPesanan = TRUE
+
+        TampilkanPesanan
+        Tampilkan "1. Lanjut pembayaran  2. Kembali ke pesanan"
+        INPUT pilihanPesan
+
+        IF pilihanPesan = 1 THEN
+            Pembayaran
+            CetakStruk
+            selesaiProses <- TRUE
+        ELSE IF pilihanPesan <> 2 THEN
+            Tampilkan "Pilihan tidak tersedia."
+        END IF
+    UNTIL selesaiProses = TRUE
+END PROCEDURE
+
+PROCEDURE TentangProgram
+BEGIN
+    selesaiTentang <- FALSE
+    REPEAT
+        Tampilkan informasi program dan konsep dasar pemrograman
+        Tampilkan "1. Kembali  2. Keluar"
+        INPUT pilihanTentang
+
+        IF pilihanTentang = 1 THEN
+            selesaiTentang <- TRUE
+        ELSE IF pilihanTentang = 2 THEN
+            Hentikan program
+        ELSE
+            Tampilkan "Pilihan tidak tersedia."
+        END IF
+    UNTIL selesaiTentang = TRUE
+END PROCEDURE
+
+REPEAT
+    Tampilkan "1. Mulai Pesanan  2. Tentang Program  3. Keluar"
+    INPUT pilihanUtama
+
+    CASE pilihanUtama OF
+        1: MulaiPesanan
+        2: TentangProgram
+        3: Tampilkan pesan terima kasih
+        ELSE: Tampilkan "Pilihan tidak tersedia."
+    END CASE
+UNTIL pilihanUtama = 3
+
+END
+```
+
 ## 1. DEKLARASI
 
 ```text

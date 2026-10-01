@@ -39,82 +39,12 @@ a {
 .app-shell {
   min-height: 100vh;
 }
-.sidebar {
-  display: none;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 0 10px 28px;
-  color: white;
-  text-decoration: none;
-}
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--primary);
-  color: white;
-  font-weight: 800;
-}
-.brand strong {
-  display: block;
-  font-size: 1rem;
-  letter-spacing: 0.01em;
-}
-.brand small {
-  display: block;
-  color: #94a3b8;
-  font-size: 0.72rem;
-}
-.nav-label {
-  margin: 12px 10px 8px;
-  color: #64748b;
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.nav-list {
-  display: grid;
-  gap: 4px;
-}
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 11px;
-  border-left: 3px solid transparent;
-  border-radius: 9px;
-  color: #cbd5e1;
-  font-size: 0.86rem;
-  text-decoration: none;
-  transition: 0.2s ease;
-}
-.nav-link:hover,
-.nav-link.active {
-  border-left-color: #60a5fa;
-  background: #1e293b;
-  color: white;
-}
-.nav-number {
-  width: 22px;
-  color: #64748b;
-  font:
-    700 0.72rem "Fira Code",
-    monospace;
-}
-.nav-link.active .nav-number {
-  color: #93c5fd;
-}
-
 .main {
-  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  min-height: 100svh;
   margin-left: 0;
-  padding: 42px clamp(22px, 5vw, 72px) 70px;
+  padding: clamp(30px, 6vh, 64px) clamp(22px, 5vw, 72px) 112px;
 }
 .page {
   width: min(1050px, 100%);
@@ -124,9 +54,6 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  .sidebar {
-    display: none;
-  }
   margin: 0 0 13px;
   color: var(--primary);
   font-size: 0.76rem;
@@ -223,6 +150,36 @@ h3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+}
+.team-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 36px;
+  align-items: start;
+  margin-top: 54px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+.team-section .eyebrow {
+  margin-bottom: 10px;
+}
+.team-section h2 {
+  margin-bottom: 8px;
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+}
+.team-member {
+  display: grid;
+  gap: 3px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.team-member span {
+  color: var(--muted);
+  font-size: 0.84rem;
 }
 .card {
   padding: 23px;
@@ -718,48 +675,161 @@ code {
 .footer-nav {
   display: none;
 }
-.floating-nav {
+.slide-controls {
   position: fixed;
-  right: clamp(16px, 4vw, 52px);
-  bottom: 18px;
-  left: clamp(16px, 4vw, 52px);
-  z-index: 20;
+  right: 50%;
+  bottom: 16px;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 42px auto minmax(70px, 150px) 42px 42px;
+  align-items: center;
+  gap: 8px;
+  width: min(590px, calc(100vw - 24px));
+  padding: 9px;
+  transform: translateX(50%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.96);
+  box-shadow: 0 14px 38px rgba(15, 23, 42, 0.24);
+  color: white;
+}
+.slide-arrow,
+.slide-menu-toggle,
+.slide-fullscreen,
+.slide-menu-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+.slide-arrow {
+  font-size: 1.25rem;
+}
+.slide-fullscreen {
+  min-width: 42px;
+  padding: 6px;
+  font-size: 1.25rem;
+}
+.slide-arrow:hover,
+.slide-menu-toggle:hover,
+.slide-fullscreen:hover,
+.slide-menu-close:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.slide-arrow[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.35;
+  pointer-events: none;
+}
+.slide-menu-toggle {
+  gap: 8px;
+  white-space: nowrap;
+}
+.slide-status {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  color: #e2e8f0;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.slide-progress {
+  height: 3px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.slide-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #60a5fa;
+  transition: width 0.35s ease;
+}
+.slide-menu[hidden] {
+  display: none;
+}
+.slide-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(8px);
+}
+.slide-menu-panel {
+  width: min(720px, 100%);
+  max-height: min(760px, calc(100svh - 40px));
+  padding: clamp(18px, 4vw, 30px);
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+  box-shadow: var(--shadow);
+  animation: appear 0.22s ease both;
+}
+.slide-menu-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  pointer-events: none;
+  gap: 16px;
+  margin-bottom: 18px;
 }
-.floating-nav a,
-.floating-nav span {
-  display: inline-flex;
+.slide-menu-heading h2 {
+  margin: 0;
+}
+.slide-menu-close {
+  background: var(--secondary);
+}
+.slide-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+.slide-menu-link {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 10px;
   align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 10px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 999px;
-  background: rgba(15, 23, 42, 0.94);
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
-  color: white;
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-decoration: none;
-  pointer-events: auto;
-  transition: 0.2s ease;
-}
-.floating-nav a:hover {
-  background: var(--primary);
-  transform: translateY(-3px);
-}
-.floating-nav .page-count {
-  border-color: var(--line);
-  background: rgba(255, 255, 255, 0.94);
+  min-height: 54px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
   color: var(--secondary);
-  font-size: 0.72rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
-.floating-nav .disabled {
-  visibility: hidden;
+.slide-menu-link:hover,
+.slide-menu-link[aria-current="page"] {
+  border-color: #93c5fd;
+  background: var(--soft-blue);
+  color: var(--primary-dark);
+}
+.slide-menu-number {
+  color: var(--primary);
+  font:
+    700 0.75rem "Fira Code",
+    monospace;
 }
 .muted {
   color: var(--muted);
@@ -786,93 +856,62 @@ code {
     transform: translateY(0);
   }
 }
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .sidebar {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    display: block;
-    padding: 8px 16px 0;
-    background: var(--secondary);
+.page > * {
+  animation: rise-in 0.55s both;
+}
+.page > *:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.page > *:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.hero > *,
+.card-grid > *,
+.stepper > .step {
+  animation: rise-in 0.55s both;
+}
+.hero > :nth-child(2),
+.card-grid > :nth-child(2),
+.stepper > .step:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.card-grid > :nth-child(3),
+.stepper > .step:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.stepper > .step:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.stepper > .step:nth-child(5) {
+  animation-delay: 0.32s;
+}
+.stepper > .step:nth-child(6) {
+  animation-delay: 0.4s;
+}
+.stepper > .step:nth-child(7) {
+  animation-delay: 0.48s;
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
   }
-  .brand,
-  .nav-label {
-    display: none;
-  }
-  .nav-list {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-  }
-  .nav-link {
-    flex: 0 0 auto;
-    border-left: 0;
-    border-bottom: 3px solid transparent;
-    white-space: nowrap;
-  }
-  .nav-link:hover,
-  .nav-link.active {
-    border-bottom-color: #60a5fa;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (min-width: 1024px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 30;
-    display: block;
-    width: 250px;
-    padding: 28px 16px;
-    overflow-y: auto;
-    background: var(--secondary);
-  }
-  .main {
-    margin-left: 250px;
-  }
-}
 @media (max-width: 767px) {
-  .sidebar {
-    display: none;
-  }
-  .brand {
-    padding: 0 4px 10px;
-  }
-  .nav-label {
-    display: none;
-  }
-  .nav-list {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding-bottom: 2px;
-  }
-  .nav-link {
-    flex: 0 0 auto;
-    border-left: 0;
-    border-bottom: 3px solid transparent;
-    padding: 9px 10px;
-    font-size: 0.76rem;
-    white-space: nowrap;
-  }
-  .nav-link:hover,
-  .nav-link.active {
-    border-bottom-color: #60a5fa;
-  }
-  .nav-number {
-    width: auto;
-  }
   .app-shell {
     display: block;
   }
   .main {
-    padding: 30px 16px 90px;
+    padding: 24px 16px 112px;
   }
   .hero,
-  .sim-grid {
+  .sim-grid,
+  .team-section {
     grid-template-columns: 1fr;
   }
   .hero {
@@ -884,19 +923,39 @@ code {
   .card-grid {
     grid-template-columns: 1fr;
   }
-  h1 {
-    font-size: 2.35rem;
+  .slide-controls {
+    grid-template-columns: 38px auto minmax(45px, 1fr) 38px 38px;
+    gap: 5px;
+    bottom: 10px;
+    padding: 7px;
   }
-  .floating-nav {
-    bottom: 12px;
+  .slide-arrow {
+    min-width: 38px;
+    min-height: 38px;
   }
-  .floating-nav a,
-  .floating-nav span {
-    min-height: 40px;
-    padding: 8px 12px;
-    font-size: 0.72rem;
+  .slide-fullscreen {
+    min-width: 38px;
+    min-height: 38px;
   }
-  .floating-nav .page-count {
-    display: none;
+  .slide-menu-toggle {
+    gap: 5px;
+    min-width: 38px;
+    min-height: 38px;
+    padding: 6px 8px;
+    font-size: 0.78rem;
+  }
+  .slide-menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

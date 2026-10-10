@@ -42,48 +42,35 @@
         align-items: center;
         height: 100vh;
         text-align: center;
-      }
-      .btn-start {
-        padding: 15px 30px;
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #2563eb;
-        color: white;
-        border: none;
-        border-radius: 8px;
         cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-      }
-      .btn-start:hover {
-        background-color: #1d4ed8;
       }
     </style>
   </head>
-  <body>
+  <body onclick="launchGame()">
     <div>
-      <h2>Warung Pak Din 2</h2>
-      <p>Klik tombol di bawah untuk masuk ke game dalam mode layar penuh.</p>
-      <br>
-      <button class="btn-start" id="startBtn">Mulai Game (Full Screen)</button>
+      <h2>Memuat Warung Pak Din 2...</h2>
+      <p>Mengarahkan ke game dalam mode layar penuh.</p>
     </div>
 
     <script>
-      document.getElementById('startBtn').addEventListener('click', function() {
-        // Memicu full screen pada elemen document atau documentElement
+      function launchGame() {
         let elem = document.documentElement;
         if (elem.requestFullscreen) {
-          elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
+          elem.requestFullscreen().catch(() => {});
+        } else if (elem.webkitRequestFullscreen) {
           elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
+        } else if (elem.msRequestFullscreen) {
           elem.msRequestFullscreen();
         }
+        window.location.replace("game/index.html");
+      }
 
-        // Langsung arahkan ke halaman game setelah tombol diklik dan full screen aktif
+      // Langsung arahkan otomatis setelah halaman termuat
+      window.onload = function() {
         setTimeout(function() {
-          window.location.href = "game/index.html";
-        }, 100);
-      });
+          window.location.replace("game/index.html");
+        }, 150);
+      };
     </script>
   </body>
 </html>

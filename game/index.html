@@ -430,6 +430,20 @@ window.PASCAL_SRC = ["program WarungPakDin;", "", "uses", "    crt;", "", "const
 
 </script>
   <script>
+
+    // Tambahkan skrip ini di dalam file game/index.html Anda
+document.addEventListener('click', function triggerFullscreenOnce() {
+  let elem = document.documentElement;
+  if (!document.fullscreenElement) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().catch(() => {});
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    }
+  }
+  // Hapus listener setelah sekali dipicu agar tidak mengganggu interaksi game
+  document.removeEventListener('click', triggerFullscreenOnce);
+}, { once: true });
 /* =====================================================================
    WARUNG PAK DIN — data.js
    SEMUA TEKS GAME ADA DI SINI. Edit kalimat tanpa menyentuh logika.

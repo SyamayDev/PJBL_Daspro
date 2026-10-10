@@ -2,7 +2,6 @@
 <html lang="id">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0; url=game/index.html" />
     <link rel="icon" type="image/svg+xml" href="game/favicon.svg" />
     <title>Warung Pak Din 2 | Media Interaktif PjBL</title>
     <meta
@@ -32,9 +31,59 @@
       content="https://kasirpakdin.vercel.app/game/og-cover.png"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <script>
-      window.location.replace("game/index.html");
-    </script>
+    <style>
+      body {
+        margin: 0;
+        background-color: #111;
+        color: #fff;
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+      }
+      .btn-start {
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      }
+      .btn-start:hover {
+        background-color: #1d4ed8;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div>
+      <h2>Warung Pak Din 2</h2>
+      <p>Klik tombol di bawah untuk masuk ke game dalam mode layar penuh.</p>
+      <br>
+      <button class="btn-start" id="startBtn">Mulai Game (Full Screen)</button>
+    </div>
+
+    <script>
+      document.getElementById('startBtn').addEventListener('click', function() {
+        // Memicu full screen pada elemen document atau documentElement
+        let elem = document.documentElement;
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+          elem.msRequestFullscreen();
+        }
+
+        // Langsung arahkan ke halaman game setelah tombol diklik dan full screen aktif
+        setTimeout(function() {
+          window.location.href = "game/index.html";
+        }, 100);
+      });
+    </script>
+  </body>
 </html>
